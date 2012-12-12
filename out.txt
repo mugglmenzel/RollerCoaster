@@ -1,0 +1,10 @@
+Number of AMIs,Number of Services,AMIs Model Creation (ms),AMIs Evaluation (ms),Services Model Creation (ms),Services Evaluation (ms),Combination Computation (ms),Total (ms)
+100,100,901999,137,65,217,100,902518
+100,200,3,63,297,224,173,760
+100,300,4,67,86,281,54,492
+100,400,2,20,143,674,38,877
+100,500,1,18,230,1344,54,1647
+100,600,1,25,238,2159,72,2495
+100,700,1,7,270,3627,115,4020
+100,800,1,10,359,5836,115,6321
+100,900,1,12,480,8102,120,8715
