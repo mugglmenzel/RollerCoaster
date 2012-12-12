@@ -88,8 +88,7 @@ public class RollerCoaster implements EntryPoint {
 	}
 
 	private void loadLogin() {
-		RootPanel.get("rollerocaster").add(welcomeView.getLayout());
-
+		RootPanel.get("rollercoaster").add(welcomeView.getLayout());
 	}
 
 	private void createMasterLayout() {
