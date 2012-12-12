@@ -4,8 +4,6 @@
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
 
-	<!-- Servlets -->
-
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
@@ -14,12 +12,22 @@
 	<!-- Servlets -->
 	<servlet>
 		<servlet-name>loginService</servlet-name>
-		<servlet-class>de.eorg.rollercoaster.server.LoginServiceImpl</servlet-class>
+		<servlet-class>de.eorg.rollercoaster.server.services.LoginServiceImpl</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>loginService</servlet-name>
 		<url-pattern>/rollercoaster/login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>rollercoasterService</servlet-name>
+		<servlet-class>de.eorg.rollercoasteservices.r.server.RollerCoasterServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>rollercoasterService</servlet-name>
+		<url-pattern>/rollercoaster/rollercoaster</url-pattern>
 	</servlet-mapping>
 
 </web-app>
