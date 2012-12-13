@@ -3,8 +3,6 @@
 # Package Files #
 target/*.jar
 target/*.war
-src/*.jar
-src/*.war
 
 
 # gwt caches and compiled units #
