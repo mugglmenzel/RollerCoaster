@@ -22,7 +22,7 @@
 	
 	<servlet>
 		<servlet-name>rollercoasterService</servlet-name>
-		<servlet-class>de.eorg.rollercoasteservices.r.server.RollerCoasterServiceImpl</servlet-class>
+		<servlet-class>de.eorg.rollercoaster.server.services.RollerCoasterServiceImpl</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
