@@ -3,6 +3,9 @@
 # Package Files #
 target/*.jar
 target/*.war
+src/*.jar
+src/*.war
+
 
 # gwt caches and compiled units #
 src/main/webapp/gwt_bree/
