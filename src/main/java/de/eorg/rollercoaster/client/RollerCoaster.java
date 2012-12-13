@@ -19,17 +19,17 @@ import com.smartgwt.client.widgets.tab.TabSet;
 
 import de.eorg.rollercoaster.client.gui.TopLayout;
 import de.eorg.rollercoaster.client.gui.canvas.LoginWindow;
+import de.eorg.rollercoaster.client.gui.views.ComponentsView;
+import de.eorg.rollercoaster.client.gui.views.CriteriaView;
+import de.eorg.rollercoaster.client.gui.views.PreferencesView;
+import de.eorg.rollercoaster.client.gui.views.RecommendationView;
+import de.eorg.rollercoaster.client.gui.views.RequirementsView;
+import de.eorg.rollercoaster.client.gui.views.WelcomeView;
+import de.eorg.rollercoaster.client.gui.views.handlers.ViewHandler;
 import de.eorg.rollercoaster.client.services.LoginService;
 import de.eorg.rollercoaster.client.services.LoginServiceAsync;
 import de.eorg.rollercoaster.client.services.RollerCoasterService;
 import de.eorg.rollercoaster.client.services.RollerCoasterServiceAsync;
-import de.eorg.rollercoaster.client.views.ComponentsView;
-import de.eorg.rollercoaster.client.views.CriteriaView;
-import de.eorg.rollercoaster.client.views.PreferencesView;
-import de.eorg.rollercoaster.client.views.RecommendationView;
-import de.eorg.rollercoaster.client.views.RequirementsView;
-import de.eorg.rollercoaster.client.views.WelcomeView;
-import de.eorg.rollercoaster.client.views.handlers.ViewHandler;
 import de.eorg.rollercoaster.shared.model.LoginInfo;
 
 /**

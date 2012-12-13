@@ -3,8 +3,11 @@
  */
 package de.eorg.rollercoaster.client.gui.canvas;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ImageStyle;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Window;
@@ -19,6 +22,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 import de.eorg.rollercoaster.client.gui.handlers.MemberUpdatedHandler;
 import de.eorg.rollercoaster.client.gui.util.ImageUtil;
+import de.eorg.rollercoaster.client.services.LoginService;
+import de.eorg.rollercoaster.client.services.LoginServiceAsync;
 import de.eorg.rollercoaster.shared.model.Member;
 
 /**
@@ -112,9 +117,9 @@ public class ProfileWindow extends Window {
 					member.setAWSAccessKey(AWSAccessItem.getValueAsString());
 
 					//TODO: member to loginservice
-					/*CrawlerServiceAsync crawlerService = GWT
-							.create(CrawlerService.class);
-					crawlerService.updateMember(member,
+					LoginServiceAsync loginService = GWT
+							.create(LoginService.class);
+					loginService.updateMember(member,
 							new AsyncCallback<Member>() {
 
 								@Override
@@ -128,7 +133,7 @@ public class ProfileWindow extends Window {
 								public void onFailure(Throwable caught) {
 									SC.warn("Something went wrong!");
 								}
-							});*/
+							});
 				}
 			}
 		});
