@@ -97,7 +97,7 @@ public class RollerCoaster implements EntryPoint {
 
 	private void loadLogin() {
 		Layout masterLayout = new VLayout();
-		masterLayout.addMember(new TopLayout(new LoginInfo()));
+		masterLayout.addMember(new TopLayout(loginInfo));
 
 		VLayout welcomeInfo = new VLayout(10);
 		welcomeInfo.setDefaultLayoutAlign(Alignment.CENTER);
@@ -136,7 +136,6 @@ public class RollerCoaster implements EntryPoint {
 
 	private void createMasterLayout() {
 		Layout masterLayout = new VLayout();
-
 
 		componentsButton.setWidth("150px");
 		componentsButton.setHeight("50px");
