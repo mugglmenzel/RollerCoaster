@@ -25,6 +25,11 @@ import de.eorg.rollercoaster.shared.model.Member;
 public class LoginServiceImpl extends RemoteServiceServlet implements
 		LoginService {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Logger log = Logger.getLogger(LoginServiceImpl.class.getName());
 
 	private final String SDB_DOMAIN = "myownthemepark-members";
