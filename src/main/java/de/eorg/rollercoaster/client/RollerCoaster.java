@@ -2,8 +2,10 @@ package de.eorg.rollercoaster.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.ImgButton;
@@ -17,7 +19,6 @@ import com.smartgwt.client.widgets.tab.TabSet;
 
 import de.eorg.rollercoaster.client.gui.TopLayout;
 import de.eorg.rollercoaster.client.gui.canvas.LoginWindow;
-import de.eorg.rollercoaster.client.services.LoginInfo;
 import de.eorg.rollercoaster.client.services.LoginService;
 import de.eorg.rollercoaster.client.services.LoginServiceAsync;
 import de.eorg.rollercoaster.client.services.RollerCoasterService;
@@ -29,6 +30,7 @@ import de.eorg.rollercoaster.client.views.RecommendationView;
 import de.eorg.rollercoaster.client.views.RequirementsView;
 import de.eorg.rollercoaster.client.views.WelcomeView;
 import de.eorg.rollercoaster.client.views.handlers.ViewHandler;
+import de.eorg.rollercoaster.shared.model.LoginInfo;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -41,7 +43,7 @@ public class RollerCoaster implements EntryPoint {
 	public static RollerCoasterServiceAsync rollerCoasterService = GWT
 			.create(RollerCoasterService.class);
 
-	public static LoginInfo loginInfo = null;
+	public static LoginInfo loginInfo;
 
 	private Anchor signOutLink = new Anchor("Sign Out");
 
@@ -77,9 +79,12 @@ public class RollerCoaster implements EntryPoint {
 					}
 
 					public void onSuccess(LoginInfo result) {
+						DOM.setStyleAttribute(RootPanel.get("loading")
+								.getElement(), "display", "none");
+						
 						loginInfo = result;
+						
 						if (loginInfo.isLoggedIn()) {
-
 							createMasterLayout();
 						} else {
 							loadLogin();
@@ -92,7 +97,7 @@ public class RollerCoaster implements EntryPoint {
 
 	private void loadLogin() {
 		Layout masterLayout = new VLayout();
-		masterLayout.addMember(new TopLayout(new de.eorg.rollercoaster.shared.model.LoginInfo()));
+		masterLayout.addMember(new TopLayout(new LoginInfo()));
 
 		VLayout welcomeInfo = new VLayout(10);
 		welcomeInfo.setDefaultLayoutAlign(Alignment.CENTER);
@@ -131,8 +136,7 @@ public class RollerCoaster implements EntryPoint {
 
 	private void createMasterLayout() {
 		Layout masterLayout = new VLayout();
-		masterLayout.setWidth100();
-		masterLayout.setHeight100();
+
 
 		componentsButton.setWidth("150px");
 		componentsButton.setHeight("50px");
@@ -198,9 +202,13 @@ public class RollerCoaster implements EntryPoint {
 		// Set up sign out hyperlink.
 		signOutLink.setHref(loginInfo.getLogoutUrl());
 
+		masterLayout.addMember(new TopLayout(new de.eorg.rollercoaster.shared.model.LoginInfo()));
 		masterLayout.addMember(signOutLink);
 		masterLayout.addMember(hPan);
 		masterLayout.addMember(vLay);
+		masterLayout.setWidth100();
+		masterLayout.setHeight100();
+		masterLayout.setMaxHeight(700);
 		masterLayout.draw();
 	}
 
