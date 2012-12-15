@@ -41,9 +41,9 @@ public class TopLayout extends HLayout {
 		setBackgroundRepeat(BkgndRepeat.REPEAT_X);
 		setAlign(Alignment.LEFT);
 
-		Anchor crawlerLogo = new Anchor(new SafeHtmlBuilder()
+		Anchor rollercoasterLogo = new Anchor(new SafeHtmlBuilder()
 				.appendHtmlConstant(
-						Canvas.imgHTML("/images/hoopla_logo.png", 397, 150))
+						Canvas.imgHTML("/images/rollercoaster_logo.png", 618, 150))
 				.toSafeHtml(), GWT.getHostPageBaseURL(), "_top");
 
 		HLayout login = new HLayout();
@@ -138,7 +138,7 @@ public class TopLayout extends HLayout {
 		login.addMember(loginDivider);
 		login.addMember(loginAnchor);
 
-		addMember(crawlerLogo);
+		addMember(rollercoasterLogo);
 		addMember(login);
 
 	}

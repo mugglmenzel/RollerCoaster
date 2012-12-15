@@ -17,17 +17,17 @@ import org.scribe.oauth.OAuthService;
  * 
  */
 public enum OAuth2Provider {
-
-	GOOGLE("Google", "371800432670.apps.googleusercontent.com",
-			"5tP_ZHTsTbUY9qojjzCoceby",
+	
+	GOOGLE("Google", "228122195584.apps.googleusercontent.com",
+			"yLw-QRpYud0FcKb44pJe_E9d",
 			"https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/plus.me",
-			"http://hooplaride.appspot.com/login/oauthcallback",
-			new GoogleApi20()), TWITTER("Twitter", "3poEFn0bsAgvT0rW7iwqQ",
-			"bvBXPzNA1g0aKKbiAnZDZuMITsrJDMjXxVIWLiEZBo", null,
-			"http://hooplaride.appspot.com/login/oauthcallback",
-			new TwitterApi()), FACEBOOK("Facebook", "404497512940853",
-			"7064c18e8a27618cb75fba852c750189", "email",
-			"http://hooplaride.appspot.com/login/oauthcallback",
+			"http://rollcoasterride.appspot.com/login/oauthcallback",
+			new GoogleApi20()), TWITTER("Twitter", "p94KQ3H4WEKcI63p4Jcw",
+			"amAUBEyQV9iHXkDUNvPhVaBVe5vudkdPC820Ody9Qg", null,
+			"http://rollcoasterride.appspot.com/login/oauthcallback",
+			new TwitterApi()), FACEBOOK("Facebook", "419995268072110",
+			"c28495912d296f490c1600bef1bf294b", "email",
+			"http://rollcoasterride.appspot.com/login/oauthcallback",
 			new FacebookApi());
 
 	private String name;

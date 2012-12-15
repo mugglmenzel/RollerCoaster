@@ -10,7 +10,9 @@ import de.eorg.rollercoaster.shared.model.Member;
 public interface LoginService extends RemoteService {
 	public LoginInfo login(String requestUri) throws Exception;
 
-	public Member registerMember(Member member);
+	public Member registerMember(Member member) throws Exception;
 
 	public Member updateMember(Member member);
+
+	public boolean memberExists(String email);
 }

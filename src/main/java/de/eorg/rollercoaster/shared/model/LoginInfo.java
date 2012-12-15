@@ -22,7 +22,7 @@ public class LoginInfo implements Serializable {
 
 	private String logoutUrl;
 
-	private Member member = new Member();
+	private Member member;
 
 	public boolean isLoggedIn() {
 		return loggedIn;

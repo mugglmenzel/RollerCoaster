@@ -1,81 +1,47 @@
 package de.eorg.rollercoaster.client.gui.views;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.HTML;
-import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.tile.TileGrid;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-import de.eorg.rollercoaster.client.RollerCoaster;
-import de.eorg.rollercoaster.client.gui.views.handlers.ViewHandler;
+public class RecommendationView extends AbstractView {
 
-public class RecommendationView extends AbstractView implements EntryPoint {
+	public RecommendationView(boolean showBackButton, boolean showNextButton,
+			String backLabel, String nextLabel, EView backView, EView nextView) {
+		super(showBackButton, showNextButton, backLabel, nextLabel, backView,
+				nextView);
 
-	public RecommendationView() {
-		setHeading(new HTML("<h1>Recommendation</h1>", true));
-		setInstructions(new HTML("<h2>This is the best known solution!</h2>",
-				true));
-		
-		
-		
-		// Back und Next Button bauen
-		IButton backButton = new IButton("Back");
-		backButton.setTop(100);
+		getHeading().setContents("<h1>Recommendation</h1>");
+		getInstructions().setContents(
+				"<h2>This is the best known solution!</h2>");
 
-		IButton nextButton = new IButton("Finish");
-		nextButton.setTop(100);
-		nextButton.setLeft(220);
+		TileGrid tileGrid = new TileGrid();
+		tileGrid.setTileWidth(194);
+		tileGrid.setTileHeight(165);
+		tileGrid.setHeight(400);
+		tileGrid.setWidth100();
+		tileGrid.setCanReorderTiles(false);
+		tileGrid.setShowAllRecords(true);
+		// tileGrid.setData(ProviderData.getRecords());
 
-		backButton.addClickHandler(new ViewHandler(RollerCoaster.preferencesView));
-		nextButton.addClickHandler(new ViewHandler(RollerCoaster.recommendationView));
+		DetailViewerField pictureField = new DetailViewerField("picture");
+		pictureField.setType("image");
+		// pictureField.setImageURLPrefix("providers/");
+		pictureField.setImageWidth(186);
+		pictureField.setImageHeight(120);
 
-		HLayout buttonLayout = new HLayout();
-		buttonLayout.setHeight(150);
-		buttonLayout.setMembersMargin(5);
-		buttonLayout.setLayoutMargin(10);
-		buttonLayout.addChild(backButton);
-		buttonLayout.addChild(nextButton);
+		DetailViewerField nameField = new DetailViewerField("name");
+		DetailViewerField priceField = new DetailViewerField("price");
 
-		// Alles auf in Layout packen
-		getLayout().add(getHeading());
-		getLayout().add(getInstructions());
-		onModuleLoad();
-		getLayout().add(buttonLayout);
-		
-		
+		tileGrid.setFields(pictureField, nameField, priceField);
+
+		getContent().addMember(tileGrid);
 
 	}
 
 	@Override
-	public void onModuleLoad() {
-		TileGrid tileGrid = new TileGrid();  
-        tileGrid.setTileWidth(194);  
-        tileGrid.setTileHeight(165);  
-        tileGrid.setHeight(400);  
-        tileGrid.setWidth100();  
-        tileGrid.setCanReorderTiles(false);  
-        tileGrid.setShowAllRecords(true);  
-       // tileGrid.setData(ProviderData.getRecords());
-        
-        DetailViewerField pictureField = new DetailViewerField("picture");  
-        pictureField.setType("image");  
-        //pictureField.setImageURLPrefix("providers/");  
-        pictureField.setImageWidth(186);  
-        pictureField.setImageHeight(120);  
-  
-        DetailViewerField nameField = new DetailViewerField("name");  
-        DetailViewerField priceField = new DetailViewerField("price");  
-  
-        tileGrid.setFields(pictureField, nameField, priceField);  
-  
-        tileGrid.draw();
-        getLayout().add(tileGrid);
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
 	}
-
-	
-
-
-
 
 }

@@ -1,36 +1,43 @@
 package de.eorg.rollercoaster.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.ImgButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.layout.VStack;
+import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
 import de.eorg.rollercoaster.client.gui.TopLayout;
 import de.eorg.rollercoaster.client.gui.canvas.LoginWindow;
+import de.eorg.rollercoaster.client.gui.canvas.RegisterWindow;
+import de.eorg.rollercoaster.client.gui.canvas.WelcomeWindow;
 import de.eorg.rollercoaster.client.gui.views.ComponentsView;
 import de.eorg.rollercoaster.client.gui.views.CriteriaView;
-import de.eorg.rollercoaster.client.gui.views.PreferencesView;
-import de.eorg.rollercoaster.client.gui.views.RecommendationView;
+import de.eorg.rollercoaster.client.gui.views.EView;
+import de.eorg.rollercoaster.client.gui.views.IView;
 import de.eorg.rollercoaster.client.gui.views.RequirementsView;
-import de.eorg.rollercoaster.client.gui.views.WelcomeView;
 import de.eorg.rollercoaster.client.gui.views.handlers.ViewHandler;
 import de.eorg.rollercoaster.client.services.LoginService;
 import de.eorg.rollercoaster.client.services.LoginServiceAsync;
 import de.eorg.rollercoaster.client.services.RollerCoasterService;
 import de.eorg.rollercoaster.client.services.RollerCoasterServiceAsync;
 import de.eorg.rollercoaster.shared.model.LoginInfo;
+import de.eorg.rollercoaster.shared.model.Member;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -45,29 +52,7 @@ public class RollerCoaster implements EntryPoint {
 
 	public static LoginInfo loginInfo;
 
-	private Anchor signOutLink = new Anchor("Sign Out");
-
-	public static TabSet tabs = new TabSet();
-
-	ImgButton componentsButton = new ImgButton();
-	ImgButton requirementsButton = new ImgButton();
-	ImgButton criteriaButton = new ImgButton();
-	ImgButton preferencesButton = new ImgButton();
-	ImgButton recommendationButton = new ImgButton();
-
-	// liste bauen mit indizes
-	{
-
-	}
-	public static WelcomeView welcomeView = new WelcomeView();
-	public static ComponentsView componentsView = new ComponentsView();
-	public static RequirementsView requirementsView = new RequirementsView();
-	public static CriteriaView criteriaView = new CriteriaView();
-	public static PreferencesView preferencesView = new PreferencesView();
-	public static RecommendationView recommendationView = new RecommendationView();
-
-	public static Layout hPan = new HLayout();
-	public static Layout vPan = new VLayout();
+	public static Map<EView, IView> viewsMap = new HashMap<EView, IView>();
 
 	@Override
 	public void onModuleLoad() {
@@ -76,19 +61,34 @@ public class RollerCoaster implements EntryPoint {
 		loginService.login(GWT.getHostPageBaseURL(),
 				new AsyncCallback<LoginInfo>() {
 					public void onFailure(Throwable error) {
+						SC.say("Error during login! "
+								+ error.getLocalizedMessage());
 					}
 
 					public void onSuccess(LoginInfo result) {
 						DOM.setStyleAttribute(RootPanel.get("loading")
 								.getElement(), "display", "none");
-						
+
 						loginInfo = result;
-						
-						if (loginInfo.isLoggedIn()) {
-							createMasterLayout();
+
+						if (!loginInfo.isLoggedIn()) {
+							new WelcomeWindow(loginInfo).show();
+							if (getMember() != null) {
+								new RegisterWindow(getMember()).show();
+							}
 						} else {
-							loadLogin();
+							/*
+							 * if (getMember() != null &&
+							 * getMember().isShowWelcomeInfo()) new
+							 * IntroductionWindow(getMember(), new
+							 * MemberUpdatedHandler() {
+							 * 
+							 * @Override public void updated(Member member) {
+							 * loginInfo.setMember(member); } }).show();
+							 */
 						}
+
+						createMasterLayout();
 
 					}
 				});
@@ -135,7 +135,23 @@ public class RollerCoaster implements EntryPoint {
 	}
 
 	private void createMasterLayout() {
-		Layout masterLayout = new VLayout();
+		Layout masterLayout = new VLayout(20);
+
+		ImgButton componentsButton = new ImgButton();
+		ImgButton requirementsButton = new ImgButton();
+		ImgButton criteriaButton = new ImgButton();
+		ImgButton preferencesButton = new ImgButton();
+		ImgButton recommendationButton = new ImgButton();
+
+		componentsButton
+				.addClickHandler(new ViewHandler(EView.COMPONENTS_VIEW));
+		requirementsButton.addClickHandler(new ViewHandler(
+				EView.REQUIREMENTS_VIEW));
+		criteriaButton.addClickHandler(new ViewHandler(EView.CRITERIA_VIEW));
+		preferencesButton.addClickHandler(new ViewHandler(
+				EView.PREFERENCES_VIEW));
+		recommendationButton.addClickHandler(new ViewHandler(
+				EView.RECOMMENDATION_VIEW));
 
 		componentsButton.setWidth("150px");
 		componentsButton.setHeight("50px");
@@ -144,78 +160,83 @@ public class RollerCoaster implements EntryPoint {
 		componentsButton.setShowTitle(true);
 
 		requirementsButton.setWidth("150px");
-		requirementsButton.setLeft("150px");
+		// requirementsButton.setLeft("150px");
 		requirementsButton.setHeight("50px");
 		requirementsButton.setSrc("bild2.png");
 		requirementsButton.setTitle("Requirements");
 		requirementsButton.setShowTitle(true);
 
 		criteriaButton.setWidth("150px");
-		criteriaButton.setLeft("300px");
+		// criteriaButton.setLeft("300px");
 		criteriaButton.setHeight("50px");
 		criteriaButton.setSrc("bild2.png");
 		criteriaButton.setTitle("Criteria");
 		criteriaButton.setShowTitle(true);
 
 		preferencesButton.setWidth("150px");
-		preferencesButton.setLeft("450px");
+		// preferencesButton.setLeft("450px");
 		preferencesButton.setHeight("50px");
 		preferencesButton.setSrc("bild2.png");
 		preferencesButton.setTitle("Preferences");
 		preferencesButton.setShowTitle(true);
 
 		recommendationButton.setSrc("bild3.png");
-		recommendationButton.setLeft("600px");
+		// recommendationButton.setLeft("600px");
 		recommendationButton.setTitle("Recommendation");
 		recommendationButton.setWidth("150px");
 		recommendationButton.setHeight("50px");
 		recommendationButton.setShowTitle(true);
 
-		hPan.setTop("50px");
-		hPan.addChild(componentsButton);
-		hPan.addChild(requirementsButton);
-		hPan.addChild(criteriaButton);
-		hPan.addChild(preferencesButton);
-		hPan.addChild(recommendationButton);
+		Layout processButtonsStack = new HStack();
+		processButtonsStack.addMember(componentsButton);
+		processButtonsStack.addMember(requirementsButton);
+		processButtonsStack.addMember(criteriaButton);
+		processButtonsStack.addMember(preferencesButton);
+		processButtonsStack.addMember(recommendationButton);
 
-		VLayout vLay = new VLayout();
-		vLay.setTop("100px");
-		vLay.addChild(componentsView.getLayout());
-		vLay.addChild(requirementsView.getLayout());
-		vLay.addChild(criteriaView.getLayout());
-		vLay.addChild(preferencesView.getLayout());
-		vLay.addChild(recommendationView.getLayout());
+		getViewsMap().put(EView.COMPONENTS_VIEW,
+				new ComponentsView(EView.REQUIREMENTS_VIEW));
+		getViewsMap()
+				.put(EView.REQUIREMENTS_VIEW,
+						new RequirementsView(EView.COMPONENTS_VIEW,
+								EView.CRITERIA_VIEW));
+		getViewsMap().put(
+				EView.CRITERIA_VIEW,
+				new CriteriaView(EView.REQUIREMENTS_VIEW,
+						EView.PREFERENCES_VIEW));
 
-		requirementsView.getLayout().setVisible(false);
-		criteriaView.getLayout().setVisible(false);
-		preferencesView.getLayout().setVisible(false);
-		recommendationView.getLayout().setVisible(false);
+		TabSet viewsTabSet = new TabSet();
+		viewsTabSet.setWidth100();
+		viewsTabSet.setHeight100();
+		for (IView view : getViewsMap().values()) {
+			Tab newTab = new Tab(view.getHeading().getContents());
+			newTab.setPane(view.getLayout());
+			viewsTabSet.addTab(newTab);
+		}
 
-		componentsButton.addClickHandler(new ViewHandler(componentsView));
-		requirementsButton.addClickHandler(new ViewHandler(requirementsView));
-		criteriaButton.addClickHandler(new ViewHandler(criteriaView));
-		preferencesButton.addClickHandler(new ViewHandler(preferencesView));
-		recommendationButton
-				.addClickHandler(new ViewHandler(recommendationView));
+		Layout mainLayout = new VStack(20);
+		mainLayout.setWidth100();
+		mainLayout.setHeight100();
+		// mainLayout.addChild(processButtonsStack);
+		mainLayout.addChild(viewsTabSet);
 
-		// Set up sign out hyperlink.
-		signOutLink.setHref(loginInfo.getLogoutUrl());
-
-		masterLayout.addMember(new TopLayout(new de.eorg.rollercoaster.shared.model.LoginInfo()));
-		masterLayout.addMember(signOutLink);
-		masterLayout.addMember(hPan);
-		masterLayout.addMember(vLay);
+		masterLayout.addMember(new TopLayout(loginInfo));
+		masterLayout.addMember(mainLayout);
 		masterLayout.setWidth100();
 		masterLayout.setHeight100();
 		masterLayout.setMaxHeight(700);
 		masterLayout.draw();
 	}
 
-	public static TabSet getTabs() {
-		return tabs;
+	/**
+	 * @return the viewsMap
+	 */
+	public static Map<EView, IView> getViewsMap() {
+		return viewsMap;
 	}
 
-	public static void setTabs(TabSet tabs) {
-		RollerCoaster.tabs = tabs;
+	private Member getMember() {
+		return loginInfo.getMember();
 	}
+
 }

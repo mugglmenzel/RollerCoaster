@@ -22,7 +22,9 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
+import de.eorg.rollercoaster.client.exceptions.MemberExistsException;
 import de.eorg.rollercoaster.client.gui.util.ImageUtil;
+import de.eorg.rollercoaster.client.gui.validators.MemberExistsValidator;
 import de.eorg.rollercoaster.client.services.LoginService;
 import de.eorg.rollercoaster.client.services.LoginServiceAsync;
 import de.eorg.rollercoaster.shared.model.Member;
@@ -110,36 +112,60 @@ public class RegisterWindow extends Window {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				if (form.validate()) {
-					member.setEmail(emailItem.getValueAsString());
-					member.setFirstname(firstNameItem.getValueAsString());
-					member.setLastname(lastNameItem.getValueAsString());
-					member.setAWSSecretKey(AWSSecretItem.getValueAsString());
-					member.setAWSAccessKey(AWSAccessItem.getValueAsString());
+				final LoginServiceAsync loginService = GWT
+						.create(LoginService.class);
+				loginService.memberExists(emailItem.getValueAsString(),
+						new AsyncCallback<Boolean>() {
 
-					//TODO: member to loginservice
-					LoginServiceAsync loginService = GWT
-							.create(LoginService.class);
-					loginService.registerMember(member,
-							new AsyncCallback<Member>() {
+							@Override
+							public void onFailure(Throwable caught) {
+								SC.say("Could not check if member already exists.");
+							}
 
-								@Override
-								public void onSuccess(Member result) {
-									if (member != null) {
-										destroy();
-										com.google.gwt.user.client.Window.Location
-												.assign(GWT
-														.getHostPageBaseURL());
-									} else
-										SC.warn("Email address already in use!");
+							@Override
+							public void onSuccess(Boolean result) {
+								emailItem
+										.setValidators(new MemberExistsValidator(
+												result));
+								if (form.validate()) {
+									member.setEmail(emailItem
+											.getValueAsString());
+									member.setFirstname(firstNameItem
+											.getValueAsString());
+									member.setLastname(lastNameItem
+											.getValueAsString());
+									member.setAWSSecretKey(AWSSecretItem
+											.getValueAsString());
+									member.setAWSAccessKey(AWSAccessItem
+											.getValueAsString());
+
+									loginService.registerMember(member,
+											new AsyncCallback<Member>() {
+
+												@Override
+												public void onSuccess(
+														Member result) {
+													if (member != null) {
+														destroy();
+														com.google.gwt.user.client.Window.Location.assign(GWT
+																.getHostPageBaseURL());
+													} else
+														SC.warn("Email address already in use!");
+												}
+
+												@Override
+												public void onFailure(
+														Throwable caught) {
+													if (caught instanceof MemberExistsException)
+														SC.warn("Email address already in use!");
+													else
+														SC.warn("Something went wrong!");
+												}
+											});
 								}
+							}
+						});
 
-								@Override
-								public void onFailure(Throwable caught) {
-									SC.warn("Something went wrong!");
-								}
-							});
-				}
 			}
 		});
 

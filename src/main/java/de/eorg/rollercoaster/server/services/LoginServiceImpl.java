@@ -1,6 +1,5 @@
 package de.eorg.rollercoaster.server.services;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,8 +16,9 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.PropertiesCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.simpledb.AmazonSimpleDB;
 import com.amazonaws.services.simpledb.AmazonSimpleDBClient;
 import com.amazonaws.services.simpledb.model.Attribute;
@@ -35,8 +35,10 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.apphosting.api.ApiProxy.OverQuotaException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import de.eorg.rollercoaster.client.OutOfQuotaException;
+import de.eorg.rollercoaster.client.exceptions.MemberExistsException;
+import de.eorg.rollercoaster.client.exceptions.OutOfQuotaException;
 import de.eorg.rollercoaster.client.services.LoginService;
+import de.eorg.rollercoaster.server.AmazonCredentials;
 import de.eorg.rollercoaster.server.OAuth2Provider;
 import de.eorg.rollercoaster.server.servlets.util.CookiesUtil;
 import de.eorg.rollercoaster.shared.model.LoginInfo;
@@ -58,14 +60,22 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 	private final String SDB_DOMAIN = "myownthemepark-members";
 
 	public LoginInfo login(String requestUri) throws Exception {
+		log.info("starting login procedure...");
 		LoginInfo loginInfo = new LoginInfo();
 		loginInfo.setLoggedIn(false);
 		loginInfo.setLoginUrl(userService.createLoginURL(requestUri));
 
-		Map<String, String> cookies = CookiesUtil
-				.getCookiesStringMap(getThreadLocalRequest().getCookies());
-		log.info("Got cookies " + cookies);
-		String oauthService = cookies.get("oauth.service");
+		log.info("reading cookies...");
+		String oauthService = null;
+		Map<String, String> cookies = null;
+		try {
+			cookies = CookiesUtil.getCookiesStringMap(getThreadLocalRequest()
+					.getCookies());
+			log.info("Got cookies " + cookies);
+			oauthService = cookies.get("oauth.service");
+		} catch (Exception e) {
+			log.log(Level.WARNING, "Cannot read cookies!", e);
+		}
 
 		log.info("Logging in with OAuth service " + oauthService);
 
@@ -100,6 +110,8 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 				accessSecretCookie.setPath("/");
 				getThreadLocalResponse().addCookie(accessSecretCookie);
 
+				Member tempMember = null;
+
 				if (OAuth2Provider.GOOGLE.equals(provider)) {
 					OAuthRequest req = new OAuthRequest(Verb.GET,
 							"https://www.googleapis.com/oauth2/v1/userinfo");
@@ -114,7 +126,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 							+ googleUserInfo.getString("given_name") + ", "
 							+ googleUserInfo.getString("family_name"));
 
-					Member tempMember = findMemberBySocialId(googleUserInfo
+					tempMember = findMemberBySocialId(googleUserInfo
 							.getString("id"));
 
 					if (tempMember == null) {
@@ -140,28 +152,25 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 						JSONObject googleUserInfo2 = new JSONObject(
 								response.getBody());
 						log.info("got user info: "
-								+ googleUserInfo2.getString("nickname") + ", "
-								+ googleUserInfo2.getString("displayName"));
+								+ googleUserInfo2.optString("displayName"));
 						if (googleUserInfo2 != null
-								&& googleUserInfo2.getJSONArray("emails") != null)
+								&& googleUserInfo2.optJSONArray("emails") != null)
 							for (int i = 0; i < googleUserInfo2.getJSONArray(
 									"emails").length(); i++) {
 								JSONObject emailInfo = googleUserInfo2
 										.getJSONArray("emails")
 										.optJSONObject(i);
 								if (emailInfo != null
-										&& emailInfo.getBoolean("primary")) {
+										&& emailInfo.optBoolean("primary")) {
 									tempMember.setEmail(emailInfo
 											.getString("value"));
-									tempMember = registerMember(tempMember);
 									loginInfo.setLoggedIn(true);
 									break;
 								}
 							}
+						log.info("created temp member " + tempMember);
 					} else
 						loginInfo.setLoggedIn(true);
-
-					loginInfo.setMember(tempMember);
 
 				} else if (OAuth2Provider.TWITTER.equals(provider)) {
 					OAuthRequest req = new OAuthRequest(Verb.GET,
@@ -177,7 +186,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 							+ twitterUserInfo.getString("name") + ", "
 							+ twitterUserInfo.getString("screen_name"));
 
-					Member tempMember = findMemberBySocialId(new Integer(
+					tempMember = findMemberBySocialId(new Integer(
 							twitterUserInfo.getInt("id")).toString());
 					if (tempMember == null) {
 						tempMember = new Member();
@@ -191,9 +200,9 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 								.getString("screen_name"));
 						tempMember.setProfilePic(twitterUserInfo
 								.getString("profile_image_url"));
+						log.info("created temp member " + tempMember);
 					} else
 						loginInfo.setLoggedIn(true);
-					loginInfo.setMember(tempMember);
 
 				} else if (OAuth2Provider.FACEBOOK.equals(provider)) {
 					OAuthRequest req = new OAuthRequest(Verb.GET,
@@ -209,7 +218,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 							+ facebookUserInfo.getString("name") + ", "
 							+ facebookUserInfo.getString("username"));
 
-					Member tempMember = findMemberBySocialId(facebookUserInfo
+					tempMember = findMemberBySocialId(facebookUserInfo
 							.getString("id"));
 					if (tempMember == null) {
 						tempMember = new Member();
@@ -226,12 +235,14 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 								+ "/picture?type=large");
 						tempMember
 								.setEmail(facebookUserInfo.getString("email"));
-						tempMember = registerMember(tempMember);
-					}
-
-					loginInfo.setLoggedIn(true);
-					loginInfo.setMember(tempMember);
+						loginInfo.setLoggedIn(true);
+						log.info("created temp member " + tempMember);
+					} else
+						loginInfo.setLoggedIn(true);
 				}
+				loginInfo.setMember(loginInfo.isLoggedIn()
+						|| tempMember.getEmail() == null ? tempMember
+						: registerOrUpdateMember(tempMember));
 				loginInfo.setLogoutUrl("/logout/oauth");
 				log.info("Set loginInfo to " + loginInfo);
 				return loginInfo;
@@ -256,18 +267,47 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 		return loginInfo;
 	}
 
-	public Member registerMember(User user) {
-		return null;
+	public Member registerMember(User user) throws Exception {
+		Member member = new Member();
+		member.setEmail(user.getEmail());
+		member.setNickname(user.getNickname());
+		member.setSocialId(user.getUserId());
+
+		return registerMember(member);
 	}
 
-	public Member registerMember(Member member) {
+	private Member registerOrUpdateMember(Member member) {
+		try {
+			return registerMember(member);
+		} catch (MemberExistsException e) {
+			return updateMember(member);
+		}
+	}
+
+	public boolean memberExists(String email) {
 		AmazonSimpleDB asdb = getSimpleDB();
 
-		asdb.putAttributes(new PutAttributesRequest(SDB_DOMAIN, member
-				.getEmail(), memberToAttributeList(member),
-				new UpdateCondition("email", member.getEmail(), false)));
+		log.info("Checking member " + email + " exists in SDB...");
 
-		return member;
+		SelectResult exists = asdb.select(new SelectRequest("select * from `"
+				+ SDB_DOMAIN + "` where itemName() = '" + email + "'", true));
+
+		return exists.getItems().size() > 0;
+	}
+
+	public Member registerMember(Member member) throws MemberExistsException {
+		AmazonSimpleDB asdb = getSimpleDB();
+
+		if (!memberExists(member.getEmail())) {
+
+			log.info("Storing member " + member.getSocialId() + " to SDB...");
+			asdb.putAttributes(new PutAttributesRequest(SDB_DOMAIN, member
+					.getEmail(), memberToAttributeList(member)));
+
+			return member;
+		} else
+			throw new MemberExistsException(
+					"Member cannot be registered. A member with same email address already exists.");
 	}
 
 	public Member updateMember(Member member) {
@@ -281,13 +321,23 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 	}
 
 	public Member findMemberBySocialId(String socialId) {
-		AmazonSimpleDB asdb = getSimpleDB();
+		if (socialId != null && !"".equals(socialId)) {
+			AmazonSimpleDB asdb = getSimpleDB();
 
-		SelectResult result = asdb.select(new SelectRequest("SELECT * FROM "
-				+ SDB_DOMAIN + " WHERE socialId = \"" + socialId + "\"", true));
+			log.info("Finding socialId " + socialId + " from SDB...");
+			log.info("query: " + "select * from " + SDB_DOMAIN
+					+ " where socialId = '" + socialId + "'");
+			SelectResult result = asdb.select(new SelectRequest(
+					"select * from `" + SDB_DOMAIN + "` where socialId = '"
+							+ socialId + "'", true));
 
-		Item resultItem = result.getItems().iterator().next();
-		return attributeListToMember(resultItem.getAttributes());
+			if (result.getItems().size() > 0) {
+				Item resultItem = result.getItems().iterator().next();
+				log.info("Found member " + resultItem.getName());
+				return attributeListToMember(resultItem.getAttributes());
+			}
+		}
+		return null;
 	}
 
 	private Member attributeListToMember(List<Attribute> attributes) {
@@ -323,22 +373,24 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 
 	private List<ReplaceableAttribute> memberToAttributeList(Member member) {
 		List<ReplaceableAttribute> attributes = new ArrayList<ReplaceableAttribute>();
-		attributes.add(new ReplaceableAttribute("email", member.getEmail(),
-				false));
+		attributes.add(new ReplaceableAttribute("email",
+				member.getEmail() == null ? "" : member.getEmail(), false));
 		attributes.add(new ReplaceableAttribute("socialId", member
-				.getSocialId(), true));
+				.getSocialId() == null ? "" : member.getSocialId(), true));
 		attributes.add(new ReplaceableAttribute("nickname", member
-				.getNickname(), true));
+				.getNickname() == null ? "" : member.getNickname(), true));
 		attributes.add(new ReplaceableAttribute("firstname", member
-				.getFirstname(), true));
+				.getFirstname() == null ? "" : member.getFirstname(), true));
 		attributes.add(new ReplaceableAttribute("lastname", member
-				.getLastname(), true));
+				.getLastname() == null ? "" : member.getLastname(), true));
 		attributes.add(new ReplaceableAttribute("profilePic", member
-				.getProfilePic(), true));
+				.getProfilePic() == null ? "" : member.getProfilePic(), true));
 		attributes.add(new ReplaceableAttribute("AWSAccessKey", member
-				.getAWSAccessKey(), true));
+				.getAWSAccessKey() == null ? "" : member.getAWSAccessKey(),
+				true));
 		attributes.add(new ReplaceableAttribute("AWSSecretKey", member
-				.getAWSSecretKey(), true));
+				.getAWSSecretKey() == null ? "" : member.getAWSSecretKey(),
+				true));
 		attributes.add(new ReplaceableAttribute("role",
 				member.getRole().name(), true));
 		attributes.add(new ReplaceableAttribute("showWelcome", new Boolean(
@@ -348,17 +400,16 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 	}
 
 	private AmazonSimpleDB getSimpleDB() {
-		try {
-			AWSCredentials credentials = new PropertiesCredentials(this
-					.getClass().getResourceAsStream(
-							"../AwsCredentials.properties"));
-			AmazonSimpleDB asdb = new AmazonSimpleDBClient(credentials);
-			asdb.createDomain(new CreateDomainRequest(SDB_DOMAIN));
-			return asdb;
-		} catch (IOException e) {
-			log.throwing(this.getClass().getName(), "getSimpleDB", e);
-		}
-		return null;
+		log.info("Connecting to SDB...");
+
+		AWSCredentials credentials = new BasicAWSCredentials(
+				AmazonCredentials.AWS_ACCESS_KEY,
+				AmazonCredentials.AWS_SECRET_KEY);
+		AmazonSimpleDB asdb = new AmazonSimpleDBClient(credentials,
+				new ClientConfiguration());
+		asdb.createDomain(new CreateDomainRequest(SDB_DOMAIN));
+		log.info("Created domain, now returning SDB client...");
+		return asdb;
 	}
 
 }
