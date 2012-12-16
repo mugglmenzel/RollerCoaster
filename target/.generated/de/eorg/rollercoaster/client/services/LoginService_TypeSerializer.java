@@ -87,6 +87,11 @@ public class LoginService_TypeSerializer extends com.google.gwt.user.client.rpc.
         @com.google.web.bindery.event.shared.UmbrellaException_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;Lcom/google/web/bindery/event/shared/UmbrellaException;),
       ];
     
+    result["de.eorg.rollercoaster.client.OutOfQuotaException/4118595214"] = [
+        @de.eorg.rollercoaster.client.OutOfQuotaException_FieldSerializer::instantiate(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;),
+        @de.eorg.rollercoaster.client.OutOfQuotaException_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;Lde/eorg/rollercoaster/client/OutOfQuotaException;),
+      ];
+    
     result["de.eorg.rollercoaster.client.exceptions.MemberExistsException/720927859"] = [
         @de.eorg.rollercoaster.client.exceptions.MemberExistsException_FieldSerializer::instantiate(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;),
         @de.eorg.rollercoaster.client.exceptions.MemberExistsException_FieldSerializer::deserialize(Lcom/google/gwt/user/client/rpc/SerializationStreamReader;Lde/eorg/rollercoaster/client/exceptions/MemberExistsException;),
@@ -343,6 +348,7 @@ public class LoginService_TypeSerializer extends com.google.gwt.user.client.rpc.
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@com.google.gwt.user.client.rpc.XsrfToken::class)] = "com.google.gwt.user.client.rpc.XsrfToken/4254043109";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@com.google.gwt.xml.client.impl.DOMParseException::class)] = "com.google.gwt.xml.client.impl.DOMParseException/3799120635";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@com.google.web.bindery.event.shared.UmbrellaException::class)] = "com.google.web.bindery.event.shared.UmbrellaException/1025846929";
+    result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@de.eorg.rollercoaster.client.OutOfQuotaException::class)] = "de.eorg.rollercoaster.client.OutOfQuotaException/4118595214";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@de.eorg.rollercoaster.client.exceptions.MemberExistsException::class)] = "de.eorg.rollercoaster.client.exceptions.MemberExistsException/720927859";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@de.eorg.rollercoaster.client.exceptions.OutOfQuotaException::class)] = "de.eorg.rollercoaster.client.exceptions.OutOfQuotaException/3694992072";
     result[@com.google.gwt.core.client.impl.Impl::getHashCode(Ljava/lang/Object;)(@de.eorg.rollercoaster.shared.model.LoginInfo::class)] = "de.eorg.rollercoaster.shared.model.LoginInfo/113414966";

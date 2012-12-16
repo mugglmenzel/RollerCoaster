@@ -5,14 +5,12 @@ import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
 public class RecommendationView extends AbstractView {
 
-	public RecommendationView(boolean showBackButton, boolean showNextButton,
-			String backLabel, String nextLabel, EView backView, EView nextView) {
-		super(showBackButton, showNextButton, backLabel, nextLabel, backView,
-				nextView);
+	public RecommendationView(EView backView) {
+		super(true, false, "back", "finish", backView, EView.RECOMMENDATION_VIEW);
 
-		getHeading().setContents("<h1>Recommendation</h1>");
+		getHeading().setContents("Recommendation");
 		getInstructions().setContents(
-				"<h2>This is the best known solution!</h2>");
+				"This is the best known solution!");
 
 		TileGrid tileGrid = new TileGrid();
 		tileGrid.setTileWidth(194);
@@ -41,7 +39,7 @@ public class RecommendationView extends AbstractView {
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

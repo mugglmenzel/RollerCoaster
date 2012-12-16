@@ -14,12 +14,11 @@ import de.eorg.rollercoaster.client.RollerCoaster;
 
 public class WelcomeView extends AbstractView {
 
-	public WelcomeView(boolean showBackButton, boolean showNextButton,
-			String backLabel, String nextLabel, EView backView, EView nextView) {
-		super(showBackButton, showNextButton, backLabel, nextLabel, backView,
+	public WelcomeView(EView nextView) {
+		super(false, true, "", "start", EView.WELCOME_VIEW,
 				nextView);
 
-		getHeading().setContents("<h1>Welcome to the Roller Coaster!</h1>");
+		getHeading().setContents("Welcome to the Roller Coaster!");
 
 		VerticalPanel loginPanel = new VerticalPanel();
 		loginPanel.setWidth("500px");

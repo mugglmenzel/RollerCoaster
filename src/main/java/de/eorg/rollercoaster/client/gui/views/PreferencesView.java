@@ -11,15 +11,13 @@ public class PreferencesView extends AbstractView {
 	final Slider s4 = new Slider(" ");
 	final Slider s5 = new Slider(" ");
 
-	public PreferencesView(boolean showBackButton, boolean showNextButton,
-			String backLabel, String nextLabel, EView backView, EView nextView) {
-		super(showBackButton, showNextButton, backLabel, nextLabel, backView,
-				nextView);
+	public PreferencesView(EView backView, EView nextView) {
+		super(true, true, "back", "next", backView, nextView);
 
-		getHeading().setContents("<h1>Preferences</h1>");
+		getHeading().setContents("Preferences");
 		getInstructions()
 				.setContents(
-						"<h2>Please define Preferences comparing evaluation criteria in pairwise comparisons in matters of importance</h2>");
+						"Please define Preferences comparing evaluation criteria in pairwise comparisons in matters of importance.");
 
 		VerticalPanel vp = new VerticalPanel();
 		vp.setSpacing(10);

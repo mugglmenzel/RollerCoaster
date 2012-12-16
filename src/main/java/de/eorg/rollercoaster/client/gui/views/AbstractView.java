@@ -11,6 +11,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
 
 import de.eorg.rollercoaster.client.RollerCoaster;
 
@@ -174,8 +175,7 @@ public abstract class AbstractView implements IView {
 	}
 
 	private void createNavigation(boolean showBackButton,
-			boolean showNextButton, 
-			String backLabel, String nextLabel,
+			boolean showNextButton, String backLabel, String nextLabel,
 			final EView backView, final EView nextView) {
 
 		IButton back = new IButton();
@@ -189,7 +189,7 @@ public abstract class AbstractView implements IView {
 		back.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RollerCoaster.getViewsMap().get(backView).show();
+				previousTab(-1);
 			}
 		});
 
@@ -204,7 +204,7 @@ public abstract class AbstractView implements IView {
 		saveAndNext.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RollerCoaster.getViewsMap().get(nextView).show();
+				nextTab(-1);
 			}
 		});
 
@@ -269,6 +269,22 @@ public abstract class AbstractView implements IView {
 	 */
 	public Label getPostitHeader() {
 		return postitHeader;
+	}
+
+	public void nextTab(final int nextNo) {
+		RollerCoaster.getViewsTabSet().selectTab(
+				nextNo != -1 ? nextNo : RollerCoaster.getViewsTabSet()
+						.getSelectedTabNumber() + 1);
+		RollerCoaster.getViewsTabSet().getSelectedTab()
+				.fireEvent(new TabSelectedEvent(null));
+	}
+
+	public void previousTab(final int prevNo) {
+		RollerCoaster.getViewsTabSet().selectTab(
+				prevNo != -1 ? prevNo : RollerCoaster.getViewsTabSet()
+						.getSelectedTabNumber() - 1);
+		RollerCoaster.getViewsTabSet().getSelectedTab()
+				.fireEvent(new TabSelectedEvent(null));
 	}
 
 	/*

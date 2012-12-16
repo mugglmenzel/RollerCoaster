@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metrics version="1" >
- <module elapsed="24039" >
-  <sources count="3596">
+ <module elapsed="19556" >
+  <sources count="3597">
    <source name="com/google/appengine/api/datastore/Blob.java" />
    <source name="com/google/appengine/api/datastore/Blob_CustomFieldSerializer.java" />
    <source name="com/google/appengine/api/datastore/Category.java" />
@@ -3290,6 +3290,7 @@
    <source name="com/smartgwt/client/widgets/viewer/DetailViewerField.java" />
    <source name="com/smartgwt/client/widgets/viewer/DetailViewerFieldIfFunction.java" />
    <source name="com/smartgwt/client/widgets/viewer/DetailViewerRecord.java" />
+   <source name="de/eorg/rollercoaster/client/OutOfQuotaException.java" />
    <source name="de/eorg/rollercoaster/client/RollerCoaster.java" />
    <source name="de/eorg/rollercoaster/client/datasource/CSRequirementsXmlDS.java" />
    <source name="de/eorg/rollercoaster/client/datasource/ComponentsXmlDS.java" />
@@ -3599,7 +3600,7 @@
    <source name="javax/validation/spi/ConfigurationState.java" />
    <source name="javax/validation/spi/ValidationProvider.java" />
   </sources>
-  <types kind="initial" count="4138">
+  <types kind="initial" count="4139">
    <type name="com.google.appengine.api.datastore.Blob" />
    <type name="com.google.appengine.api.datastore.Blob_CustomFieldSerializer" />
    <type name="com.google.appengine.api.datastore.Category" />
@@ -7365,6 +7366,7 @@
    <type name="com.smartgwt.client.widgets.viewer.DetailViewerField" />
    <type name="com.smartgwt.client.widgets.viewer.DetailViewerFieldIfFunction" />
    <type name="com.smartgwt.client.widgets.viewer.DetailViewerRecord" />
+   <type name="de.eorg.rollercoaster.client.OutOfQuotaException" />
    <type name="de.eorg.rollercoaster.client.RollerCoaster" />
    <type name="de.eorg.rollercoaster.client.datasource.CSRequirementsXmlDS" />
    <type name="de.eorg.rollercoaster.client.datasource.ComponentsXmlDS" />
@@ -7741,8 +7743,8 @@
   </types>
  </module>
  <precompilations>
-  <precompilation base="0" ids="0,1,2,3,4,5" elapsed="40956" >
-   <types kind="ast" count="501">
+  <precompilation base="0" ids="0,1,2,3,4,5" elapsed="31695" >
+   <types kind="ast" count="520">
     <type name="com.google.appengine.api.datastore.EntityNotFoundException" />
     <type name="com.google.appengine.api.datastore.EntityNotFoundException_CustomFieldSerializer" />
     <type name="com.google.gwt.core.client.Duration" />
@@ -7789,6 +7791,10 @@
     <type name="com.google.gwt.dom.client.Node" />
     <type name="com.google.gwt.dom.client.ScriptElement" />
     <type name="com.google.gwt.dom.client.Style" />
+    <type name="com.google.gwt.dom.client.TableCellElement" />
+    <type name="com.google.gwt.dom.client.TableElement" />
+    <type name="com.google.gwt.dom.client.TableRowElement" />
+    <type name="com.google.gwt.dom.client.TableSectionElement" />
     <type name="com.google.gwt.event.dom.client.ClickEvent" />
     <type name="com.google.gwt.event.dom.client.DomEvent" />
     <type name="com.google.gwt.event.dom.client.DomEvent$Type" />
@@ -7961,9 +7967,13 @@
     <type name="com.google.gwt.user.client.ui.AttachDetachException" />
     <type name="com.google.gwt.user.client.ui.AttachDetachException$1" />
     <type name="com.google.gwt.user.client.ui.AttachDetachException$2" />
+    <type name="com.google.gwt.user.client.ui.CellPanel" />
     <type name="com.google.gwt.user.client.ui.ComplexPanel" />
     <type name="com.google.gwt.user.client.ui.DirectionalTextHelper" />
     <type name="com.google.gwt.user.client.ui.FocusWidget" />
+    <type name="com.google.gwt.user.client.ui.HasHorizontalAlignment$AutoHorizontalAlignmentConstant" />
+    <type name="com.google.gwt.user.client.ui.HasHorizontalAlignment$HorizontalAlignmentConstant" />
+    <type name="com.google.gwt.user.client.ui.HasVerticalAlignment$VerticalAlignmentConstant" />
     <type name="com.google.gwt.user.client.ui.Image" />
     <type name="com.google.gwt.user.client.ui.Image$State" />
     <type name="com.google.gwt.user.client.ui.Image$State$1" />
@@ -7977,6 +7987,7 @@
     <type name="com.google.gwt.user.client.ui.RootPanel$2" />
     <type name="com.google.gwt.user.client.ui.RootPanel$DefaultRootPanel" />
     <type name="com.google.gwt.user.client.ui.UIObject" />
+    <type name="com.google.gwt.user.client.ui.VerticalPanel" />
     <type name="com.google.gwt.user.client.ui.Widget" />
     <type name="com.google.gwt.user.client.ui.WidgetCollection" />
     <type name="com.google.gwt.user.client.ui.WidgetCollection$WidgetIterator" />
@@ -8042,6 +8053,7 @@
     <type name="com.smartgwt.client.widgets.Img" />
     <type name="com.smartgwt.client.widgets.ImgButton" />
     <type name="com.smartgwt.client.widgets.Label" />
+    <type name="com.smartgwt.client.widgets.Slider" />
     <type name="com.smartgwt.client.widgets.StatefulCanvas" />
     <type name="com.smartgwt.client.widgets.StretchImg" />
     <type name="com.smartgwt.client.widgets.StretchImgButton" />
@@ -8077,9 +8089,14 @@
     <type name="com.smartgwt.client.widgets.menu.MenuItem" />
     <type name="com.smartgwt.client.widgets.tab.Tab" />
     <type name="com.smartgwt.client.widgets.tab.TabSet" />
+    <type name="com.smartgwt.client.widgets.tile.TileGrid" />
+    <type name="com.smartgwt.client.widgets.tile.TileLayout" />
     <type name="com.smartgwt.client.widgets.tree.Tree" />
     <type name="com.smartgwt.client.widgets.tree.TreeGrid" />
     <type name="com.smartgwt.client.widgets.tree.TreeNode" />
+    <type name="com.smartgwt.client.widgets.viewer.DetailViewerField" />
+    <type name="de.eorg.rollercoaster.client.OutOfQuotaException" />
+    <type name="de.eorg.rollercoaster.client.OutOfQuotaException_FieldSerializer" />
     <type name="de.eorg.rollercoaster.client.RollerCoaster" />
     <type name="de.eorg.rollercoaster.client.RollerCoaster$1" />
     <type name="de.eorg.rollercoaster.client.datasource.CSRequirementsXmlDS" />
@@ -8123,6 +8140,8 @@
     <type name="de.eorg.rollercoaster.client.gui.views.CriteriaView$cloudServiceTreeNode" />
     <type name="de.eorg.rollercoaster.client.gui.views.CriteriaView$vMImageTreeNode" />
     <type name="de.eorg.rollercoaster.client.gui.views.EView" />
+    <type name="de.eorg.rollercoaster.client.gui.views.PreferencesView" />
+    <type name="de.eorg.rollercoaster.client.gui.views.RecommendationView" />
     <type name="de.eorg.rollercoaster.client.gui.views.RequirementsView" />
     <type name="de.eorg.rollercoaster.client.gui.views.RequirementsView$1" />
     <type name="de.eorg.rollercoaster.client.gui.views.RequirementsView$2" />
@@ -8130,6 +8149,8 @@
     <type name="de.eorg.rollercoaster.client.gui.views.RequirementsView$4" />
     <type name="de.eorg.rollercoaster.client.gui.views.RequirementsView$5" />
     <type name="de.eorg.rollercoaster.client.gui.views.RequirementsView$6" />
+    <type name="de.eorg.rollercoaster.client.gui.views.WelcomeView" />
+    <type name="de.eorg.rollercoaster.client.gui.views.WelcomeView$1" />
     <type name="de.eorg.rollercoaster.client.gui.views.handlers.ViewHandler" />
     <type name="de.eorg.rollercoaster.client.services.LoginService_Proxy" />
     <type name="de.eorg.rollercoaster.client.services.LoginService_TypeSerializer" />
@@ -8245,7 +8266,7 @@
     <type name="javax.validation.UnexpectedTypeException" />
     <type name="javax.validation.ValidationException" />
    </types>
-   <types kind="generated" count="104">
+   <types kind="generated" count="105">
     <type name="com.google.appengine.api.datastore.EntityNotFoundException_FieldSerializer" />
     <type name="com.google.gwt.event.shared.UmbrellaException_FieldSerializer" />
     <type name="com.google.gwt.http.client.RequestException_FieldSerializer" />
@@ -8341,6 +8362,7 @@
     <type name="com.google.gwt.xml.client.impl.DOMParseException_FieldSerializer" />
     <type name="com.google.web.bindery.event.shared.UmbrellaException_FieldSerializer" />
     <type name="com.smartgwt.client.i18n.SmartGwtMessages_" />
+    <type name="de.eorg.rollercoaster.client.OutOfQuotaException_FieldSerializer" />
     <type name="de.eorg.rollercoaster.client.exceptions.MemberExistsException_FieldSerializer" />
     <type name="de.eorg.rollercoaster.client.exceptions.OutOfQuotaException_FieldSerializer" />
     <type name="de.eorg.rollercoaster.client.services.LoginService_Proxy" />
@@ -8354,34 +8376,34 @@
  </precompilation>
  </precompilations>
  <compilations>
-  <compilation  id="0" elapsed="8761" totalElapsed="49867"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=safari,videoElementSupport=maybe,audioElementSupport=maybe,canvasElementSupport=maybe,dragEventSupport=maybe,geolocationSupport=maybe,storageSupport=maybe,touchEventSupport=maybe">
-   <javascript size="225082" fragments="1">
-    <fragment initial="true" size="225082" />
+  <compilation  id="0" elapsed="7308" totalElapsed="39103"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=safari,videoElementSupport=maybe,audioElementSupport=maybe,canvasElementSupport=maybe,dragEventSupport=maybe,geolocationSupport=maybe,storageSupport=maybe,touchEventSupport=maybe">
+   <javascript size="233778" fragments="1">
+    <fragment initial="true" size="233778" />
    </javascript>
   </compilation>
-  <compilation  id="1" elapsed="22471" totalElapsed="25696"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=gecko1_8,videoElementSupport=maybe,audioElementSupport=maybe,canvasElementSupport=maybe,dragEventSupport=maybe,geolocationSupport=maybe,storageSupport=maybe,touchEventSupport=maybe">
-   <javascript size="224287" fragments="1">
-    <fragment initial="true" size="224287" />
+  <compilation  id="1" elapsed="19659" totalElapsed="22764"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=gecko1_8,videoElementSupport=maybe,audioElementSupport=maybe,canvasElementSupport=maybe,dragEventSupport=maybe,geolocationSupport=maybe,storageSupport=maybe,touchEventSupport=maybe">
+   <javascript size="232884" fragments="1">
+    <fragment initial="true" size="232884" />
    </javascript>
   </compilation>
-  <compilation  id="2" elapsed="22487" totalElapsed="25726"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=opera,videoElementSupport=maybe,audioElementSupport=maybe,canvasElementSupport=maybe,dragEventSupport=maybe,geolocationSupport=maybe,storageSupport=maybe,touchEventSupport=maybe">
-   <javascript size="222814" fragments="1">
-    <fragment initial="true" size="222814" />
+  <compilation  id="2" elapsed="19192" totalElapsed="21990"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=opera,videoElementSupport=maybe,audioElementSupport=maybe,canvasElementSupport=maybe,dragEventSupport=maybe,geolocationSupport=maybe,storageSupport=maybe,touchEventSupport=maybe">
+   <javascript size="231383" fragments="1">
+    <fragment initial="true" size="231383" />
    </javascript>
   </compilation>
-  <compilation  id="3" elapsed="22059" totalElapsed="25310"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=ie6,videoElementSupport=no,audioElementSupport=no,canvasElementSupport=no,dragEventSupport=no,geolocationSupport=no,storageSupport=no,touchEventSupport=no">
-   <javascript size="236151" fragments="1">
-    <fragment initial="true" size="236151" />
+  <compilation  id="3" elapsed="19450" totalElapsed="22323"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=ie6,videoElementSupport=no,audioElementSupport=no,canvasElementSupport=no,dragEventSupport=no,geolocationSupport=no,storageSupport=no,touchEventSupport=no">
+   <javascript size="244773" fragments="1">
+    <fragment initial="true" size="244773" />
    </javascript>
   </compilation>
-  <compilation  id="4" elapsed="6312" totalElapsed="58651"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=ie8,videoElementSupport=no,audioElementSupport=no,canvasElementSupport=no,dragEventSupport=no,geolocationSupport=maybe,storageSupport=maybe,touchEventSupport=maybe">
-   <javascript size="224690" fragments="1">
-    <fragment initial="true" size="224690" />
+  <compilation  id="4" elapsed="5975" totalElapsed="47096"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=ie8,videoElementSupport=no,audioElementSupport=no,canvasElementSupport=no,dragEventSupport=no,geolocationSupport=maybe,storageSupport=maybe,touchEventSupport=maybe">
+   <javascript size="233178" fragments="1">
+    <fragment initial="true" size="233178" />
    </javascript>
   </compilation>
-  <compilation  id="5" elapsed="6327" totalElapsed="65925"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=ie9,videoElementSupport=maybe,audioElementSupport=maybe,canvasElementSupport=maybe,dragEventSupport=maybe,geolocationSupport=maybe,storageSupport=maybe,touchEventSupport=maybe">
-   <javascript size="224507" fragments="1">
-    <fragment initial="true" size="224507" />
+  <compilation  id="5" elapsed="5552" totalElapsed="54012"  description="ClientBundle.enableInlining=true,compiler.emulatedStack=false,compiler.predeclare.cross.fragment.references=false,compiler.stackMode=native,gwt.forceBidi=false,gwt.logging.enabled=FALSE,gwt.suppressNonStaticFinalFieldWarnings=false,locale=default,user.agent=ie9,videoElementSupport=maybe,audioElementSupport=maybe,canvasElementSupport=maybe,dragEventSupport=maybe,geolocationSupport=maybe,storageSupport=maybe,touchEventSupport=maybe">
+   <javascript size="233087" fragments="1">
+    <fragment initial="true" size="233087" />
    </javascript>
   </compilation>
  </compilations>

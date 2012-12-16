@@ -30,7 +30,10 @@ import de.eorg.rollercoaster.client.gui.views.ComponentsView;
 import de.eorg.rollercoaster.client.gui.views.CriteriaView;
 import de.eorg.rollercoaster.client.gui.views.EView;
 import de.eorg.rollercoaster.client.gui.views.IView;
+import de.eorg.rollercoaster.client.gui.views.PreferencesView;
+import de.eorg.rollercoaster.client.gui.views.RecommendationView;
 import de.eorg.rollercoaster.client.gui.views.RequirementsView;
+import de.eorg.rollercoaster.client.gui.views.WelcomeView;
 import de.eorg.rollercoaster.client.gui.views.handlers.ViewHandler;
 import de.eorg.rollercoaster.client.services.LoginService;
 import de.eorg.rollercoaster.client.services.LoginServiceAsync;
@@ -44,15 +47,16 @@ import de.eorg.rollercoaster.shared.model.Member;
  */
 public class RollerCoaster implements EntryPoint {
 
-	public static LoginServiceAsync loginService = GWT
-			.create(LoginService.class);
+	private LoginServiceAsync loginService = GWT.create(LoginService.class);
 
-	public static RollerCoasterServiceAsync rollerCoasterService = GWT
+	private RollerCoasterServiceAsync rollerCoasterService = GWT
 			.create(RollerCoasterService.class);
 
 	public static LoginInfo loginInfo;
 
 	public static Map<EView, IView> viewsMap = new HashMap<EView, IView>();
+
+	public static TabSet viewsTabSet = new TabSet();
 
 	@Override
 	public void onModuleLoad() {
@@ -135,7 +139,7 @@ public class RollerCoaster implements EntryPoint {
 	}
 
 	private void createMasterLayout() {
-		Layout masterLayout = new VLayout(20);
+		Layout masterLayout = new VLayout();
 
 		ImgButton componentsButton = new ImgButton();
 		ImgButton requirementsButton = new ImgButton();
@@ -194,8 +198,12 @@ public class RollerCoaster implements EntryPoint {
 		processButtonsStack.addMember(preferencesButton);
 		processButtonsStack.addMember(recommendationButton);
 
-		getViewsMap().put(EView.COMPONENTS_VIEW,
-				new ComponentsView(EView.REQUIREMENTS_VIEW));
+		getViewsMap().put(EView.WELCOME_VIEW,
+				new WelcomeView(EView.REQUIREMENTS_VIEW));
+		getViewsMap()
+				.put(EView.COMPONENTS_VIEW,
+						new ComponentsView(EView.WELCOME_VIEW,
+								EView.REQUIREMENTS_VIEW));
 		getViewsMap()
 				.put(EView.REQUIREMENTS_VIEW,
 						new RequirementsView(EView.COMPONENTS_VIEW,
@@ -204,8 +212,13 @@ public class RollerCoaster implements EntryPoint {
 				EView.CRITERIA_VIEW,
 				new CriteriaView(EView.REQUIREMENTS_VIEW,
 						EView.PREFERENCES_VIEW));
+		getViewsMap().put(
+				EView.PREFERENCES_VIEW,
+				new PreferencesView(EView.CRITERIA_VIEW,
+						EView.RECOMMENDATION_VIEW));
+		getViewsMap().put(EView.RECOMMENDATION_VIEW,
+				new RecommendationView(EView.PREFERENCES_VIEW));
 
-		TabSet viewsTabSet = new TabSet();
 		viewsTabSet.setWidth100();
 		viewsTabSet.setHeight100();
 		for (IView view : getViewsMap().values()) {
@@ -215,6 +228,7 @@ public class RollerCoaster implements EntryPoint {
 		}
 
 		Layout mainLayout = new VStack(20);
+		mainLayout.setBackgroundColor("white");
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
 		// mainLayout.addChild(processButtonsStack);
@@ -237,6 +251,13 @@ public class RollerCoaster implements EntryPoint {
 
 	private Member getMember() {
 		return loginInfo.getMember();
+	}
+
+	/**
+	 * @return the viewsTabSet
+	 */
+	public static TabSet getViewsTabSet() {
+		return viewsTabSet;
 	}
 
 }

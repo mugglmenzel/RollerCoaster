@@ -1,4 +1,4 @@
 # Module rollercoaster
 # RPC service class, partial path of RPC policy file
-de.eorg.rollercoaster.client.services.LoginService, B2B308800EEFA1BF593BB769C348A737.gwt.rpc
 de.eorg.rollercoaster.client.services.RollerCoasterService, F18E06A1424361C6526CBFCA6002AC85.gwt.rpc
+de.eorg.rollercoaster.client.services.LoginService, 99FE2BA249FB1339A4606AAB6BA4B5A1.gwt.rpc

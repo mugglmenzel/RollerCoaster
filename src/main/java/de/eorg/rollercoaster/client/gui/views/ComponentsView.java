@@ -25,9 +25,9 @@ public class ComponentsView extends AbstractView {
 
 	public final ListGrid componentsGrid = new ListGrid();
 
-	public ComponentsView(EView nextView) {
+	public ComponentsView(EView backView, EView nextView) {
 		super(false, true,
-			null, "next", EView.COMPONENTS_VIEW, nextView);
+			null, "next", backView, nextView);
 
 		getHeading().setContents("Components");
 		getInstructions()

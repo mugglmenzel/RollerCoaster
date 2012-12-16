@@ -13,7 +13,7 @@ import com.google.gwt.user.client.rpc.impl.RpcStatsContext;
 
 public class LoginService_Proxy extends RemoteServiceProxy implements de.eorg.rollercoaster.client.services.LoginServiceAsync {
   private static final String REMOTE_SERVICE_INTERFACE_NAME = "de.eorg.rollercoaster.client.services.LoginService";
-  private static final String SERIALIZATION_POLICY ="B2B308800EEFA1BF593BB769C348A737";
+  private static final String SERIALIZATION_POLICY ="99FE2BA249FB1339A4606AAB6BA4B5A1";
   private static final de.eorg.rollercoaster.client.services.LoginService_TypeSerializer SERIALIZER = new de.eorg.rollercoaster.client.services.LoginService_TypeSerializer();
   
   public LoginService_Proxy() {

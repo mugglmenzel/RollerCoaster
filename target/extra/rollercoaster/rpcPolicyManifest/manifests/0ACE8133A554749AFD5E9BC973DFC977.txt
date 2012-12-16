@@ -1,2 +1,0 @@
-serviceClass: de.eorg.rollercoaster.client.services.LoginService
-path: B2B308800EEFA1BF593BB769C348A737.gwt.rpc
