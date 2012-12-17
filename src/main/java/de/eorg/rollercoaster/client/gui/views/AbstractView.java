@@ -182,10 +182,10 @@ public abstract class AbstractView implements IView {
 		back.setTitle(backLabel);
 		back.setLayoutAlign(Alignment.LEFT);
 		back.setDisabled(!showBackButton);
+		back.setVisible(showBackButton);
 		back.setAutoFit(true);
-		if (showBackButton) {
+		if (showBackButton)
 			back.setIcon("/images/arrow_left.png");
-		}
 		back.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -198,8 +198,10 @@ public abstract class AbstractView implements IView {
 		saveAndNext.setLeft(500);
 		saveAndNext.setLayoutAlign(Alignment.RIGHT);
 		saveAndNext.setDisabled(!showNextButton);
+		saveAndNext.setVisible(showNextButton);
 		saveAndNext.setAutoFit(true);
-		saveAndNext.setIcon("/images/arrow_right.png");
+		if (showNextButton)
+			saveAndNext.setIcon("/images/arrow_right.png");
 		saveAndNext.setIconOrientation("right");
 		saveAndNext.addClickHandler(new ClickHandler() {
 

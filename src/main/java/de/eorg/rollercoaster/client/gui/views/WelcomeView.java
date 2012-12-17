@@ -5,6 +5,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.ImgButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -15,10 +16,43 @@ import de.eorg.rollercoaster.client.RollerCoaster;
 public class WelcomeView extends AbstractView {
 
 	public WelcomeView(EView nextView) {
-		super(false, true, "", "start", EView.WELCOME_VIEW,
-				nextView);
+		super(false, true, "", "start", EView.WELCOME_VIEW, nextView);
 
 		getHeading().setContents("Welcome to the Roller Coaster!");
+
+		IButton singleComponent = new IButton(
+				"<span style=\"font-size: 14pt\">Start Simple Web App in the Cloud</span>",
+				new ClickHandler() {
+
+					@Override
+					public void onClick(ClickEvent event) {
+						nextTab(-1);
+					}
+				});
+		singleComponent.setAutoWidth();
+		singleComponent.setHeight(50);
+
+		IButton multiComponent = new IButton(
+				"<span style=\"font-size: 14pt\">Start Complex Web App in the Cloud</span>",
+				new ClickHandler() {
+
+					@Override
+					public void onClick(ClickEvent event) {
+						nextTab(-1);
+					}
+				});
+		multiComponent.setDisabled(true);
+		multiComponent.setAutoWidth();
+		multiComponent.setHeight(50);
+
+		getContent().addMember(singleComponent);
+		getContent()
+				.addMember(
+						new Label(
+								"Find a VM Image and Comput Service for your Web Application with One-Click Deployment."));
+		getContent().addMember(new Label(" "));
+		getContent().addMember(multiComponent);
+		getContent().addMember(new Label("Coming Soon."));
 
 		VerticalPanel loginPanel = new VerticalPanel();
 		loginPanel.setWidth("500px");
@@ -54,13 +88,13 @@ public class WelcomeView extends AbstractView {
 		loginPanel.add(log);
 		loginPanel.add(loginLabel);
 		loginPanel.add(img);
-		getContent().addMember(loginPanel);
+		// getContent().addMember(loginPanel);
 
 	}
 
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
