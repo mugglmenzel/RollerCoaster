@@ -29,8 +29,11 @@ public class WelcomeView extends AbstractView {
 						nextTab(-1);
 					}
 				});
-		singleComponent.setAutoWidth();
+		singleComponent.setWidth(500);
 		singleComponent.setHeight(50);
+		Label singleComponentDescription = new Label(
+				"Find a VM Image and Comput Service for your Web Application with One-Click Deployment.");
+		singleComponentDescription.setAutoHeight();
 
 		IButton multiComponent = new IButton(
 				"<span style=\"font-size: 14pt\">Start Complex Web App in the Cloud</span>",
@@ -42,17 +45,16 @@ public class WelcomeView extends AbstractView {
 					}
 				});
 		multiComponent.setDisabled(true);
-		multiComponent.setAutoWidth();
+		multiComponent.setWidth(500);
 		multiComponent.setHeight(50);
+		Label multiComponentDescription = new Label("Coming Soon.");
+		multiComponentDescription.setAutoHeight();
 
 		getContent().addMember(singleComponent);
-		getContent()
-				.addMember(
-						new Label(
-								"Find a VM Image and Comput Service for your Web Application with One-Click Deployment."));
+		getContent().addMember(singleComponentDescription);
 		getContent().addMember(new Label(" "));
 		getContent().addMember(multiComponent);
-		getContent().addMember(new Label("Coming Soon."));
+		getContent().addMember(multiComponentDescription);
 
 		VerticalPanel loginPanel = new VerticalPanel();
 		loginPanel.setWidth("500px");

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.eorg.rollercoaster.client.gui;
+package de.eorg.rollercoaster.client.gui.canvas;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -14,8 +14,6 @@ import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
 
-import de.eorg.rollercoaster.client.gui.canvas.LoginWindow;
-import de.eorg.rollercoaster.client.gui.canvas.ProfileWindow;
 import de.eorg.rollercoaster.client.gui.handlers.MemberUpdatedHandler;
 import de.eorg.rollercoaster.client.gui.util.ImageUtil;
 import de.eorg.rollercoaster.shared.model.LoginInfo;
@@ -43,7 +41,7 @@ public class TopLayout extends HLayout {
 
 		Anchor rollercoasterLogo = new Anchor(new SafeHtmlBuilder()
 				.appendHtmlConstant(
-						Canvas.imgHTML("/images/rollercoaster_logo.png", 618, 150))
+						Canvas.imgHTML("/images/rollercoaster_logo.png", 412, 100))
 				.toSafeHtml(), GWT.getHostPageBaseURL(), "_top");
 
 		HLayout login = new HLayout();

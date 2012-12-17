@@ -22,9 +22,9 @@ import com.smartgwt.client.widgets.layout.VStack;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
-import de.eorg.rollercoaster.client.gui.TopLayout;
 import de.eorg.rollercoaster.client.gui.canvas.LoginWindow;
 import de.eorg.rollercoaster.client.gui.canvas.RegisterWindow;
+import de.eorg.rollercoaster.client.gui.canvas.TopLayout;
 import de.eorg.rollercoaster.client.gui.canvas.WelcomeWindow;
 import de.eorg.rollercoaster.client.gui.views.ComponentsView;
 import de.eorg.rollercoaster.client.gui.views.CriteriaView;
