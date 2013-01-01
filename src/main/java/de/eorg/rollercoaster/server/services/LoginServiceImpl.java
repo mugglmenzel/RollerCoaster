@@ -1,5 +1,6 @@
 package de.eorg.rollercoaster.server.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +19,7 @@ import org.scribe.oauth.OAuthService;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.PropertiesCredentials;
 import com.amazonaws.services.simpledb.AmazonSimpleDB;
 import com.amazonaws.services.simpledb.AmazonSimpleDBClient;
 import com.amazonaws.services.simpledb.model.Attribute;
@@ -38,7 +39,6 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import de.eorg.rollercoaster.client.exceptions.MemberExistsException;
 import de.eorg.rollercoaster.client.exceptions.OutOfQuotaException;
 import de.eorg.rollercoaster.client.services.LoginService;
-import de.eorg.rollercoaster.server.AmazonCredentials;
 import de.eorg.rollercoaster.server.OAuth2Provider;
 import de.eorg.rollercoaster.server.servlets.util.CookiesUtil;
 import de.eorg.rollercoaster.shared.model.LoginInfo;
@@ -401,14 +401,19 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 
 	private AmazonSimpleDB getSimpleDB() {
 		log.info("Connecting to SDB...");
+		AmazonSimpleDB asdb = null;
+		try {
+			AWSCredentials credentials;
 
-		AWSCredentials credentials = new BasicAWSCredentials(
-				AmazonCredentials.AWS_ACCESS_KEY,
-				AmazonCredentials.AWS_SECRET_KEY);
-		AmazonSimpleDB asdb = new AmazonSimpleDBClient(credentials,
-				new ClientConfiguration());
-		asdb.createDomain(new CreateDomainRequest(SDB_DOMAIN));
-		log.info("Created domain, now returning SDB client...");
+			credentials = new PropertiesCredentials(this.getClass()
+					.getResourceAsStream("../AwsCredentials.properties"));
+			asdb = new AmazonSimpleDBClient(credentials,
+					new ClientConfiguration());
+			asdb.createDomain(new CreateDomainRequest(SDB_DOMAIN));
+			log.info("Created domain, now returning SDB client...");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return asdb;
 	}
 
