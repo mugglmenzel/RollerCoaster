@@ -1,2 +1,0 @@
-serviceClass: de.eorg.rollercoaster.client.services.RollerCoasterService
-path: F18E06A1424361C6526CBFCA6002AC85.gwt.rpc
