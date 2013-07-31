@@ -24,7 +24,7 @@ public abstract class AbstractView implements IView {
 
 	private Layout content = new VLayout();
 
-	private Canvas navigation = new Canvas();
+	public Canvas navigation = new Canvas();
 
 	private Label postit = new Label();
 
