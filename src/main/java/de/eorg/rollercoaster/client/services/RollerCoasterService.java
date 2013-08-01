@@ -25,4 +25,6 @@ public interface RollerCoasterService extends RemoteService {
 	
 	public void savePreference(int VMImage, int Quality, int Latency, int Performance, int Cost, String user);
 	public Preferences loadPreferences(String key);
+	public void saveCSCriteria(boolean cpu, boolean ram, boolean uptime, boolean popularity, boolean initialLicenceCosts, boolean hourlyLicenceCosts, boolean maxLatency, boolean avgLatency, String user);
+	public void saveVMCriteria(boolean initialLicenceCosts, boolean hourlyLicenceCosts, boolean popularity, boolean age, String user);
 }

@@ -3,6 +3,7 @@ package de.eorg.rollercoaster.client.gui.views;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Slider;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -29,6 +30,8 @@ public class PreferencesView extends AbstractView {
 		IButton save = new IButton("Speichern");
 		save.setLeft(300);
 		save.setVisible(true);
+		save.setAutoFit(true);
+		save.setTitle("Speichern");
 		
 		getHeading().setContents("Preferences");
 		getInstructions()
@@ -37,9 +40,9 @@ public class PreferencesView extends AbstractView {
 
 		VerticalPanel vp = new VerticalPanel();
 		vp.setSpacing(10);
-		int VMImage;
+		
 		if(RollerCoaster.loginInfo.getMember()!=null){
-		Preferences p = rollerCoasterService.loadPreferences(RollerCoaster.loginInfo.getMember().getSocialId(),new AsyncCallback<Preferences>(){
+		rollerCoasterService.loadPreferences(RollerCoaster.loginInfo.getMember().getSocialId(),new AsyncCallback<Preferences>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -49,13 +52,13 @@ public class PreferencesView extends AbstractView {
 
 			@Override
 			public void onSuccess(Preferences result) {
-				// TODO Auto-generated method stub
+				s1.setValue(result.getVMImage());				
+				//SC.say(new Integer(result.getVMImage()).toString());
 				
 			}});
-		VMImage = p.getVMImage();
+
 		}
-		else
-			VMImage = 1;
+
 		
 		s1.setVertical(false);
 		s1.setNumValues(5);
@@ -64,7 +67,6 @@ public class PreferencesView extends AbstractView {
 		s1.setMaxValueLabel("Quality VM Image");
 		s1.setMaxValue(5);
 		s1.setMinValue(1);
-		s1.setValue(VMImage);
 		vp.add(s1);
 
 		s2.setVertical(false);

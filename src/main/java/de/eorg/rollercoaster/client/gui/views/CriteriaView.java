@@ -1,15 +1,24 @@
 package de.eorg.rollercoaster.client.gui.views;
 
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.TreeModelType;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeNode;
+
+import de.eorg.rollercoaster.client.RollerCoaster;
+import de.eorg.rollercoaster.client.services.RollerCoasterService;
+import de.eorg.rollercoaster.client.services.RollerCoasterServiceAsync;
 
 public class CriteriaView extends AbstractView {
 	public static final TreeNode[] vMImageData = new TreeNode[] {
@@ -35,6 +44,9 @@ public class CriteriaView extends AbstractView {
 			new cloudServiceTreeNode("300", "1", "Best Latency Service", false),
 			new cloudServiceTreeNode("310", "300", "Max. Lateny", false),
 			new cloudServiceTreeNode("320", "300", "Avg. Latency", false) };
+	
+	private RollerCoasterServiceAsync rollerCoasterService = GWT
+			.create(RollerCoasterService.class);
 
 	public CriteriaView(EView backView, EView nextView) {
 		super(true, true, "back", "next", backView,
@@ -43,7 +55,6 @@ public class CriteriaView extends AbstractView {
 		getInstructions()
 				.setContents(
 						"Please define Criteria on which alternatives will be evaluated");
-
 		// first tree
 		final Tree vmImageTree = new Tree();
 		vmImageTree.setModelType(TreeModelType.PARENT);
@@ -65,6 +76,12 @@ public class CriteriaView extends AbstractView {
 		vMImageTreeGrid.setShowSelectedStyle(false);
 		vMImageTreeGrid.setShowPartialSelection(true);
 		vMImageTreeGrid.setCascadeSelection(true);
+		
+		IButton save = new IButton("Speichern");
+		save.setLeft(300);
+		save.setVisible(true);
+		save.setAutoFit(true);
+		save.setTitle("Speichern");
 
 		vMImageTreeGrid.addDrawHandler(new DrawHandler() {
 			public void onDraw(DrawEvent event) {
@@ -114,6 +131,7 @@ public class CriteriaView extends AbstractView {
 
 		layout_two.addMember(h_2);
 		layout_two.addMember(cloudServiceTreeGrid);
+		layout_two.addMember(save);
 
 		/**
 		 * nextButton.addClickHandler(new ClickHandler() { public void
@@ -136,6 +154,47 @@ public class CriteriaView extends AbstractView {
 		// Alles in Layout packen
 		getContent().addMember(layout_one);
 		getContent().addMember(layout_two);
+		
+		save.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				ListGridRecord[] tn = vMImageTreeGrid.getSelectedRecords();
+				
+				
+				
+				String member = "default";
+				if(RollerCoaster.loginInfo.getMember()!=null)
+					member = RollerCoaster.loginInfo.getMember().getSocialId();
+				rollerCoasterService.saveVMCriteria(vMImageData[1].getEnabled(),vmImageTree.getAttributeAsBoolean("Hourly Licence Costs"),vMImageData[4].getEnabled(),vMImageData[5].getEnabled(),member,new AsyncCallback<Void>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}});
+				
+				rollerCoasterService.saveCSCriteria(cloudServiceData[2].getEnabled(),cloudServiceData[3].getEnabled(),cloudServiceData[4].getEnabled(),cloudServiceData[5].getEnabled(),cloudServiceData[7].getEnabled(),cloudServiceData[8].getEnabled(),cloudServiceData[10].getEnabled(),cloudServiceData[11].getEnabled(),member,new AsyncCallback<Void>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}});
+				
+			}
+		});
 	}
 
 	public static class vMImageTreeNode extends TreeNode {

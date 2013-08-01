@@ -1,12 +1,14 @@
 package de.eorg.rollercoaster.shared.cloudmapping.model.mapping;
 
+import java.io.Serializable;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
-public class Preferences {
+public class Preferences implements Serializable {
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Long id;
@@ -32,6 +34,8 @@ public class Preferences {
 	this.Cost = Cost;
 	this.userID = user;
 	}
+	
+	public Preferences(){}
 
 	public String getUser() {
 		return userID;
