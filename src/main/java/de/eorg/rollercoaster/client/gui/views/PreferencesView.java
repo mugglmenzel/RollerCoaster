@@ -52,7 +52,11 @@ public class PreferencesView extends AbstractView {
 
 			@Override
 			public void onSuccess(Preferences result) {
-				s1.setValue(result.getVMImage());				
+				s1.setValue(result.getVMImage());
+				s2.setValue(result.getQuality());
+				s3.setValue(result.getLatency());
+				s4.setValue(result.getPerformance());
+				s5.setValue(result.getCost());
 				//SC.say(new Integer(result.getVMImage()).toString());
 				
 			}});

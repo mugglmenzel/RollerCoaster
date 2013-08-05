@@ -44,6 +44,18 @@ public class Preferences implements Serializable {
 	public int getVMImage(){
 		return VMImage;
 	}
+	public int getQuality(){
+		return Quality;
+	}
+	public int getLatency(){
+		return Latency;
+	}
+	public int getPerformance(){
+		return Performance;
+	}
+	public int getCost(){
+		return Cost;
+	}
 	
 
  
