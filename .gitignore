@@ -20,3 +20,8 @@ src/main/webapp/WEB-INF/classes/
 
 # mvn #
 target/
+
+# eclipse & idea
+.eclipse
+.*
+.idea
