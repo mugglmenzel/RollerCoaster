@@ -1,7 +1,18 @@
 package de.eorg.rollercoaster.client.gui.views;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Slider;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
+
+import de.eorg.rollercoaster.client.RollerCoaster;
+import de.eorg.rollercoaster.client.services.RollerCoasterService;
+import de.eorg.rollercoaster.client.services.RollerCoasterServiceAsync;
+import de.eorg.rollercoaster.shared.cloudmapping.model.mapping.Preferences;
 
 public class PreferencesView extends AbstractView {
 
@@ -10,10 +21,18 @@ public class PreferencesView extends AbstractView {
 	final Slider s3 = new Slider(" ");
 	final Slider s4 = new Slider(" ");
 	final Slider s5 = new Slider(" ");
+	private RollerCoasterServiceAsync rollerCoasterService = GWT
+			.create(RollerCoasterService.class);
 
 	public PreferencesView(EView backView, EView nextView) {
 		super(true, true, "back", "next", backView, nextView);
 
+		IButton save = new IButton("Speichern");
+		save.setLeft(300);
+		save.setVisible(true);
+		save.setAutoFit(true);
+		save.setTitle("Speichern");
+		
 		getHeading().setContents("Preferences");
 		getInstructions()
 				.setContents(
@@ -21,7 +40,30 @@ public class PreferencesView extends AbstractView {
 
 		VerticalPanel vp = new VerticalPanel();
 		vp.setSpacing(10);
+		
+		if(RollerCoaster.loginInfo.getMember()!=null){
+		rollerCoasterService.loadPreferences(RollerCoaster.loginInfo.getMember().getSocialId(),new AsyncCallback<Preferences>(){
 
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Preferences result) {
+				s1.setValue(result.getVMImage());
+				s2.setValue(result.getQuality());
+				s3.setValue(result.getLatency());
+				s4.setValue(result.getPerformance());
+				s5.setValue(result.getCost());
+				//SC.say(new Integer(result.getVMImage()).toString());
+				
+			}});
+
+		}
+
+		
 		s1.setVertical(false);
 		s1.setNumValues(5);
 		s1.setLength(800);
@@ -67,9 +109,33 @@ public class PreferencesView extends AbstractView {
 		s5.setMinValue(1);
 		vp.add(s5);
 
+		vp.add(save);
 		// Alles auf in Layout packen
 		getContent().addMember(vp);
 
+		save.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				String member = "default";
+				if(RollerCoaster.loginInfo.getMember()!=null)
+					member = RollerCoaster.loginInfo.getMember().getSocialId();
+				rollerCoasterService.savePreference((int) s1.getValue(),(int) s2.getValue(), (int) s3.getValue(),(int) s4.getValue(), (int) s5.getValue(),member,new AsyncCallback<Void>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}});
+				
+			}
+		});
+		
 	}
 
 	@Override

@@ -222,8 +222,8 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 							.getString("id"));
 					if (tempMember == null) {
 						tempMember = new Member();
-						tempMember.setSocialId(new Integer(facebookUserInfo
-								.getString("id")).toString());
+						tempMember.setSocialId(facebookUserInfo
+								.getString("id"));
 						tempMember.setFirstname(facebookUserInfo
 								.getString("first_name"));
 						tempMember.setLastname(facebookUserInfo
