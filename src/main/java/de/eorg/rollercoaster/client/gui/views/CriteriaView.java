@@ -1,9 +1,13 @@
 package de.eorg.rollercoaster.client.gui.views;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.TreeModelType;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -42,7 +46,7 @@ public class CriteriaView extends AbstractView {
 			new cloudServiceTreeNode("220", "200", "Hourly License Costs",
 					false),
 			new cloudServiceTreeNode("300", "1", "Best Latency Service", false),
-			new cloudServiceTreeNode("310", "300", "Max. Lateny", false),
+			new cloudServiceTreeNode("310", "300", "Max. Latency", false),
 			new cloudServiceTreeNode("320", "300", "Avg. Latency", false) };
 	
 	private RollerCoasterServiceAsync rollerCoasterService = GWT
@@ -64,7 +68,7 @@ public class CriteriaView extends AbstractView {
 		vmImageTree.setParentIdField("ReportsTo");
 		vmImageTree.setOpenProperty("isOpen");
 		vmImageTree.setData(vMImageData);
-
+		
 		final TreeGrid vMImageTreeGrid = new TreeGrid();
 		vMImageTreeGrid.setWidth(200);
 		vMImageTreeGrid.setHeight(170);
@@ -76,6 +80,7 @@ public class CriteriaView extends AbstractView {
 		vMImageTreeGrid.setShowSelectedStyle(false);
 		vMImageTreeGrid.setShowPartialSelection(true);
 		vMImageTreeGrid.setCascadeSelection(true);
+		
 		
 		IButton save = new IButton("Speichern");
 		save.setLeft(300);
@@ -155,17 +160,109 @@ public class CriteriaView extends AbstractView {
 		getContent().addMember(layout_one);
 		getContent().addMember(layout_two);
 		
+		
+		
 		save.addClickHandler(new ClickHandler() {
+			boolean iniLicCosts = false;
+			boolean hourLicCosts = false;
+			boolean pop = false;
+			boolean age = false;
+			boolean cpu = false;
+			boolean ram = false;
+			boolean uptime = false;
+			boolean popularity = false;
+			boolean csIniLicCosts = false;
+			boolean csHourlyLicCosts = false;
+			boolean maxLatency = false;
+			boolean avgLatency= false;
 
 			public void onClick(ClickEvent event) {
-				ListGridRecord[] tn = vMImageTreeGrid.getSelectedRecords();
+				//ListGridRecord[] tn = vMImageTreeGrid.getSelectedRecords();				
+				//SC.say(vMImageTreeGrid.getSelectedPaths());
+				//String[] selection = vMImageTreeGrid.getSelectedPaths().split("/");
 				
+				Matcher matcher = Pattern.compile("Initial License Costs").matcher(vMImageTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					iniLicCosts=true;
+				else
+					iniLicCosts = false;
+				matcher = Pattern.compile("Hourly").matcher(vMImageTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					hourLicCosts=true;
+				else
+					hourLicCosts=false;
+				matcher = Pattern.compile("Popularity").matcher(vMImageTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					pop=true;
+				else
+					pop = false;
+				matcher = Pattern.compile("Age").matcher(vMImageTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					age=true;
+				else
+					age=false;
 				
+				// CSTree Grid
 				
+				matcher = Pattern.compile("CPU").matcher(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					cpu=true;
+				else
+					cpu = false;
+				matcher = Pattern.compile("RAM").matcher(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					ram=true;
+				else
+					ram=false;
+				matcher = Pattern.compile("Popularity").matcher(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					popularity=true;
+				else
+					popularity = false;
+				matcher = Pattern.compile("Uptime").matcher(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					uptime=true;
+				else
+					uptime=false;
+				matcher = Pattern.compile("Initial").matcher(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					csIniLicCosts=true;
+				else
+					csIniLicCosts = false;
+				matcher = Pattern.compile("Hourly").matcher(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					csHourlyLicCosts=true;
+				else
+					csHourlyLicCosts=false;
+				matcher = Pattern.compile("Avg.").matcher(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					avgLatency=true;
+				else
+					avgLatency=false;
+				matcher = Pattern.compile("Max.").matcher(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher.find())
+					maxLatency=true;
+				else
+					maxLatency=false;
+				
+//				for(int i = 0; i < selection.length;i++)
+//				{
+//					SC.say(selection[i]);
+//					
+//					
+//					if (selection[i].equals("Initial License Costs"))
+//						iniLicCosts = true;
+//					if (selection[i].equals("Hourly Licence Costs"))
+//						hourLicCosts = true;
+//					if (selection[i].equals("Popularity"))
+//						pop = true;
+//					if (selection[i].equals("Age"))
+//						age = true;
+//				}
 				String member = "default";
 				if(RollerCoaster.loginInfo.getMember()!=null)
 					member = RollerCoaster.loginInfo.getMember().getSocialId();
-				rollerCoasterService.saveVMCriteria(vMImageData[1].getEnabled(),vmImageTree.getAttributeAsBoolean("Hourly Licence Costs"),vMImageData[4].getEnabled(),vMImageData[5].getEnabled(),member,new AsyncCallback<Void>(){
+				rollerCoasterService.saveVMCriteria(iniLicCosts,hourLicCosts,pop,age,member,new AsyncCallback<Void>(){
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -179,7 +276,7 @@ public class CriteriaView extends AbstractView {
 						
 					}});
 				
-				rollerCoasterService.saveCSCriteria(cloudServiceData[2].getEnabled(),cloudServiceData[3].getEnabled(),cloudServiceData[4].getEnabled(),cloudServiceData[5].getEnabled(),cloudServiceData[7].getEnabled(),cloudServiceData[8].getEnabled(),cloudServiceData[10].getEnabled(),cloudServiceData[11].getEnabled(),member,new AsyncCallback<Void>(){
+				rollerCoasterService.saveCSCriteria(cpu,ram,uptime,popularity,csIniLicCosts,csHourlyLicCosts,maxLatency,avgLatency,member,new AsyncCallback<Void>(){
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -214,6 +311,7 @@ public class CriteriaView extends AbstractView {
 			setAttribute("ReportsTo", reportsTo);
 			setAttribute("Name", name);
 			setAttribute("isOpen", isOpen);
+			
 		}
 	}
 
