@@ -9,7 +9,6 @@ import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
 public class Preferences implements Serializable {
-	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Long id;
 	@Persistent
@@ -23,6 +22,7 @@ public class Preferences implements Serializable {
 	@Persistent
 	private int Cost;
 	@Persistent
+	@PrimaryKey
 	private String userID;
 	
 	public Preferences(int VMImage, int Quality, int Latency, int Performance, int Cost, String user){

@@ -19,6 +19,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeNode;
+import com.smartgwt.client.widgets.tree.events.NodeClickEvent;
+import com.smartgwt.client.widgets.tree.events.NodeClickHandler;
 
 import de.eorg.rollercoaster.client.RollerCoaster;
 import de.eorg.rollercoaster.client.services.RollerCoasterService;
@@ -48,6 +50,7 @@ public class CriteriaView extends AbstractView {
 			new cloudServiceTreeNode("300", "1", "Best Latency Service", false),
 			new cloudServiceTreeNode("310", "300", "Max. Latency", false),
 			new cloudServiceTreeNode("320", "300", "Avg. Latency", false) };
+	
 	
 	private RollerCoasterServiceAsync rollerCoasterService = GWT
 			.create(RollerCoasterService.class);
@@ -81,6 +84,7 @@ public class CriteriaView extends AbstractView {
 		vMImageTreeGrid.setShowPartialSelection(true);
 		vMImageTreeGrid.setCascadeSelection(true);
 		
+
 		
 		IButton save = new IButton("Speichern");
 		save.setLeft(300);
@@ -94,6 +98,8 @@ public class CriteriaView extends AbstractView {
 			}
 		});
 
+		
+		
 		VLayout layout_one = new VLayout();
 		Label h_1 = new Label("<h3>Virtual Machine Image Criteria</h3>");
 		h_1.setWidth("200px");
@@ -177,9 +183,10 @@ public class CriteriaView extends AbstractView {
 			boolean avgLatency= false;
 
 			public void onClick(ClickEvent event) {
-				//ListGridRecord[] tn = vMImageTreeGrid.getSelectedRecords();				
+
 				//SC.say(vMImageTreeGrid.getSelectedPaths());
 				//String[] selection = vMImageTreeGrid.getSelectedPaths().split("/");
+				
 				
 				Matcher matcher = Pattern.compile("Initial License Costs").matcher(vMImageTreeGrid.getSelectedPaths());
 				if(matcher.find())
@@ -234,17 +241,18 @@ public class CriteriaView extends AbstractView {
 					csHourlyLicCosts=true;
 				else
 					csHourlyLicCosts=false;
-				matcher = Pattern.compile("Avg.").matcher(cloudServiceTreeGrid.getSelectedPaths());
+				matcher = Pattern.compile("Avg").matcher(cloudServiceTreeGrid.getSelectedPaths());
 				if(matcher.find())
 					avgLatency=true;
 				else
 					avgLatency=false;
-				matcher = Pattern.compile("Max.").matcher(cloudServiceTreeGrid.getSelectedPaths());
+				matcher = Pattern.compile("Max").matcher(cloudServiceTreeGrid.getSelectedPaths());
 				if(matcher.find())
 					maxLatency=true;
 				else
 					maxLatency=false;
 				
+
 //				for(int i = 0; i < selection.length;i++)
 //				{
 //					SC.say(selection[i]);
