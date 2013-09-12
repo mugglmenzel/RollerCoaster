@@ -273,7 +273,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 		member.setNickname(user.getNickname());
 		member.setSocialId(user.getUserId());
 
-		return registerMember(member);
+		return registerOrUpdateMember(member);
 	}
 
 	private Member registerOrUpdateMember(Member member) {
