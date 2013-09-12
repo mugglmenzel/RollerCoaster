@@ -42,6 +42,8 @@ public class CSCriteria {
 		this.hourlyLicenceCosts = hourlyLicenceCosts;
 		this.uptime = uptime;
 		this.cpu = cpu;
+		this.maxLatency = maxLatency;
+		this.avgLatency = avgLatency;
 		this.userID = user;
 	}
 
