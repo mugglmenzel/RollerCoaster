@@ -1,9 +1,10 @@
 package de.eorg.rollercoaster.client.gui.views;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.TreeModelType;
@@ -188,66 +189,66 @@ public class CriteriaView extends AbstractView {
 				//String[] selection = vMImageTreeGrid.getSelectedPaths().split("/");
 				
 				
-				Matcher matcher = Pattern.compile("Initial License Costs").matcher(vMImageTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				MatchResult matcher = RegExp.compile("Initial License Costs").exec(vMImageTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					iniLicCosts=true;
 				else
 					iniLicCosts = false;
-				matcher = Pattern.compile("Hourly").matcher(vMImageTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("Hourly").exec(vMImageTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					hourLicCosts=true;
 				else
 					hourLicCosts=false;
-				matcher = Pattern.compile("Popularity").matcher(vMImageTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("Popularity").exec(vMImageTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					pop=true;
 				else
 					pop = false;
-				matcher = Pattern.compile("Age").matcher(vMImageTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("Age").exec(vMImageTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					age=true;
 				else
 					age=false;
 				
 				// CSTree Grid
 				
-				matcher = Pattern.compile("CPU").matcher(cloudServiceTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("CPU").exec(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					cpu=true;
 				else
 					cpu = false;
-				matcher = Pattern.compile("RAM").matcher(cloudServiceTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("RAM").exec(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					ram=true;
 				else
 					ram=false;
-				matcher = Pattern.compile("Popularity").matcher(cloudServiceTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("Popularity").exec(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					popularity=true;
 				else
 					popularity = false;
-				matcher = Pattern.compile("Uptime").matcher(cloudServiceTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("Uptime").exec(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					uptime=true;
 				else
 					uptime=false;
-				matcher = Pattern.compile("Initial").matcher(cloudServiceTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("Initial").exec(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					csIniLicCosts=true;
 				else
 					csIniLicCosts = false;
-				matcher = Pattern.compile("Hourly").matcher(cloudServiceTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("Hourly").exec(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					csHourlyLicCosts=true;
 				else
 					csHourlyLicCosts=false;
-				matcher = Pattern.compile("Avg").matcher(cloudServiceTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("Avg").exec(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					avgLatency=true;
 				else
 					avgLatency=false;
-				matcher = Pattern.compile("Max").matcher(cloudServiceTreeGrid.getSelectedPaths());
-				if(matcher.find())
+				matcher = RegExp.compile("Max").exec(cloudServiceTreeGrid.getSelectedPaths());
+				if(matcher != null)
 					maxLatency=true;
 				else
 					maxLatency=false;

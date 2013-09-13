@@ -4,7 +4,7 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-
+ 
 @PersistenceCapable
 public class VMCriteria {
 
@@ -21,7 +21,7 @@ public class VMCriteria {
 	private boolean age;
 	@Persistent
 	private String userID;
-	
+	 
 	
 	public VMCriteria(boolean initialLicenceCosts, boolean hourlyLicenceCosts, boolean popularity, boolean age, String user)
 	{

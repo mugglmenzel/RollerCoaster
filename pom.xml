@@ -12,10 +12,27 @@
 	</properties>
 	<build>
 		<!-- <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory> -->
-		<!-- <outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory> -->
-		<outputDirectory>target/${project.artifactId}-${project.version}/WEB-INF/classes</outputDirectory>
-
+		<outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>
 		<plugins>
+			<!-- GAE plugin -->
+			<plugin>
+				<groupId>com.google.appengine</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>1.8.3</version>
+				<configuration>
+					<jvmFlags>
+						<jvmFlag>-Xdebug</jvmFlag>
+						<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=1044,server=y,suspend=n</jvmFlag>
+						<!-- <jvmFlag>-Xrunjdwp:transport=dt_socket,address=1044,server=y,suspend=y</jvmFlag> -->
+					</jvmFlags>
+					<disableUpdateCheck>true</disableUpdateCheck>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.appengine</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>1.8.3</version>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -26,19 +43,6 @@
 					<verbose>true</verbose>
 				</configuration>
 			</plugin>
-			<!-- GAE plugin -->
-			<plugin> <groupId>com.google.appengine</groupId> <artifactId>appengine-maven-plugin</artifactId> 
-				<version>1.8.3</version> <configuration> <jvmFlags> <jvmFlag>-Xdebug</jvmFlag> 
-				<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=1044,server=y,suspend=n</jvmFlag> 
-			<!-- <jvmFlag>-Xrunjdwp:transport=dt_socket,address=1044,server=y,suspend=y</jvmFlag> -->
-				</jvmFlags> <disableUpdateCheck>true</disableUpdateCheck> </configuration> 
-				</plugin> 
-			<plugin>
-				<groupId>com.google.appengine</groupId>
-				<artifactId>appengine-maven-plugin</artifactId>
-				<version>1.8.3</version>
-			</plugin>
-
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -158,13 +162,6 @@
 				</executions>
 				<dependencies>
 					<dependency>
-						<groupId>com.google.appengine</groupId>
-						<artifactId>appengine-api-1.0-sdk</artifactId>
-						<version>1.8.3</version>
-					</dependency>
-					
-
-					<dependency>
 						<groupId>org.datanucleus</groupId>
 						<artifactId>datanucleus-core</artifactId>
 						<version>1.1.5</version>
@@ -185,6 +182,7 @@
 						<artifactId>datanucleus-enhancer</artifactId>
 						<version>1.1.4</version>
 					</dependency>
+
 				</dependencies>
 			</plugin>
 
@@ -556,9 +554,9 @@
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
+
 	</dependencies>
 	<repositories>
-
 		<repository>
 			<id>maven2 central</id>
 			<url>http://repo1.maven.org/maven2</url>
