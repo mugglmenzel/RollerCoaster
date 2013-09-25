@@ -92,6 +92,8 @@ public class CriteriaView extends AbstractView {
 		vMImageTreeGrid.setShowPartialSelection(true);
 		vMImageTreeGrid.setCascadeSelection(true);
 		
+		
+		//Einstellungen der letzten Sitzung laden
 		if(RollerCoaster.loginInfo.getMember()!=null){
 
 			rollerCoasterService.loadVMCriteria(RollerCoaster.loginInfo.getMember().getSocialId(),new AsyncCallback<VMCriteria>(){
@@ -116,6 +118,7 @@ public class CriteriaView extends AbstractView {
 					if (result.isAge())
 						vMImageTreeGrid.selectRecord(vMImageData[5]);
 					
+				    logger.log(Level.INFO, "Loaded VMCriteria: "+result.getInitialLicenceCosts());
 				}});
 
 			}
