@@ -2,32 +2,36 @@ package de.eorg.rollercoaster.client.gui.views;
 
 
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.TreeModelType;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeNode;
-import com.smartgwt.client.widgets.tree.events.NodeClickEvent;
-import com.smartgwt.client.widgets.tree.events.NodeClickHandler;
 
 import de.eorg.rollercoaster.client.RollerCoaster;
 import de.eorg.rollercoaster.client.services.RollerCoasterService;
 import de.eorg.rollercoaster.client.services.RollerCoasterServiceAsync;
+import de.eorg.rollercoaster.server.services.RollerCoasterServiceImpl;
+import de.eorg.rollercoaster.shared.cloudmapping.model.mapping.CSCriteria;
+import de.eorg.rollercoaster.shared.cloudmapping.model.mapping.VMCriteria;
+
 
 public class CriteriaView extends AbstractView {
+	
 	public static final TreeNode[] vMImageData = new TreeNode[] {
 			new vMImageTreeNode("100", "1", "CheapestVMImage", true),
 			new vMImageTreeNode("200", "100", "Initial License Costs", false),
@@ -36,22 +40,24 @@ public class CriteriaView extends AbstractView {
 			new vMImageTreeNode("500", "400", "Popularity", false),
 			new vMImageTreeNode("600", "400", "Age", false) };
 
-	public static final TreeNode[] cloudServiceData = new TreeNode[] {
-			new cloudServiceTreeNode("100", "1", "Best Quality Service", true),
-			new cloudServiceTreeNode("110", "100", "Performance", false),
-			new cloudServiceTreeNode("111", "110", "CPU", true),
-			new cloudServiceTreeNode("112", "110", "RAM", true),
-			new cloudServiceTreeNode("120", "100", "Uptime", false),
-			new cloudServiceTreeNode("130", "100", "Popularity", false),
-			new cloudServiceTreeNode("200", "1", "Cheapest Service", false),
-			new cloudServiceTreeNode("210", "200", "Initial License Costs",
-					false),
-			new cloudServiceTreeNode("220", "200", "Hourly License Costs",
-					false),
-			new cloudServiceTreeNode("300", "1", "Best Latency Service", false),
-			new cloudServiceTreeNode("310", "300", "Max. Latency", false),
-			new cloudServiceTreeNode("320", "300", "Avg. Latency", false) };
+	public static final TreeNode[] cloudServiceData= new TreeNode[] {
+		new cloudServiceTreeNode("100", "1", "Best Quality Service", false),
+		new cloudServiceTreeNode("110", "100", "Performance", false),
+		new cloudServiceTreeNode("111", "110", "CPU", false),
+		new cloudServiceTreeNode("112", "110", "RAM", false),
+		new cloudServiceTreeNode("120", "100", "Uptime", false),
+		new cloudServiceTreeNode("130", "100", "Popularity", false),
+		new cloudServiceTreeNode("200", "1", "Cheapest Service", false),
+		new cloudServiceTreeNode("210", "200", "Initial License Costs",
+				false),
+		new cloudServiceTreeNode("220", "200", "Hourly License Costs",
+				false),
+		new cloudServiceTreeNode("300", "1", "Best Latency Service", false),
+		new cloudServiceTreeNode("310", "300", "Max. Latency", false),
+		new cloudServiceTreeNode("320", "300", "Avg. Latency", false) 
+		};;
 	
+	private Logger logger = Logger.getLogger("CriteriaView.class.getName()");
 	
 	private RollerCoasterServiceAsync rollerCoasterService = GWT
 			.create(RollerCoasterService.class);
@@ -63,6 +69,7 @@ public class CriteriaView extends AbstractView {
 		getInstructions()
 				.setContents(
 						"Please define Criteria on which alternatives will be evaluated");
+		
 		// first tree
 		final Tree vmImageTree = new Tree();
 		vmImageTree.setModelType(TreeModelType.PARENT);
@@ -85,7 +92,33 @@ public class CriteriaView extends AbstractView {
 		vMImageTreeGrid.setShowPartialSelection(true);
 		vMImageTreeGrid.setCascadeSelection(true);
 		
+		if(RollerCoaster.loginInfo.getMember()!=null){
 
+			rollerCoasterService.loadVMCriteria(RollerCoaster.loginInfo.getMember().getSocialId(),new AsyncCallback<VMCriteria>(){
+
+				@Override
+				public void onFailure(Throwable caught) {
+					
+				}
+
+				@Override
+				public void onSuccess(VMCriteria result) {
+					
+					if (result.getInitialLicenceCosts())
+						vMImageTreeGrid.selectRecord(vMImageData[1]);
+					
+					if (result.isHourlyLicenceCosts())
+						vMImageTreeGrid.selectRecord(vMImageData[2]);
+					
+					if (result.isPopularity())
+						vMImageTreeGrid.selectRecord(vMImageData[4]);
+					
+					if (result.isAge())
+						vMImageTreeGrid.selectRecord(vMImageData[5]);
+					
+				}});
+
+			}
 		
 		IButton save = new IButton("Speichern");
 		save.setLeft(300);
@@ -99,8 +132,6 @@ public class CriteriaView extends AbstractView {
 			}
 		});
 
-		
-		
 		VLayout layout_one = new VLayout();
 		Label h_1 = new Label("<h3>Virtual Machine Image Criteria</h3>");
 		h_1.setWidth("200px");
@@ -130,6 +161,48 @@ public class CriteriaView extends AbstractView {
 		cloudServiceTreeGrid.setShowSelectedStyle(false);
 		cloudServiceTreeGrid.setShowPartialSelection(true);
 		cloudServiceTreeGrid.setCascadeSelection(true);
+		
+		//TODO: Remove
+	    logger.log(Level.INFO, "Try to load CSCriteria...");
+	    
+		if(RollerCoaster.loginInfo.getMember()!=null){
+
+			rollerCoasterService.loadCSCriteria(RollerCoaster.loginInfo.getMember().getSocialId(),new AsyncCallback<CSCriteria>(){
+
+				@Override
+				public void onFailure(Throwable caught) {
+					
+				}
+
+				@Override
+				public void onSuccess(CSCriteria result) {
+					
+					if (result.isCpu())
+						cloudServiceTreeGrid.selectRecord(cloudServiceData[2]);
+					
+					if (result.isRam())
+						cloudServiceTreeGrid.selectRecord(cloudServiceData[3]);
+					
+					if (result.isUptime())
+						cloudServiceTreeGrid.selectRecord(cloudServiceData[4]);
+					
+					if (result.isPopularity())
+						cloudServiceTreeGrid.selectRecord(cloudServiceData[5]);
+					
+					if (result.isInitialLicenceCosts())
+						cloudServiceTreeGrid.selectRecord(cloudServiceData[7]);
+					
+					if (result.isHourlyLicenceCosts())
+						cloudServiceTreeGrid.selectRecord(cloudServiceData[8]);
+					
+					if (result.isMaxLatency())
+						cloudServiceTreeGrid.selectRecord(cloudServiceData[10]);
+					
+					if (result.isAvgLatency())
+						cloudServiceTreeGrid.selectRecord(cloudServiceData[11]);
+				}});
+
+			}
 
 		cloudServiceTreeGrid.addDrawHandler(new DrawHandler() {
 			public void onDraw(DrawEvent event) {
@@ -167,8 +240,6 @@ public class CriteriaView extends AbstractView {
 		getContent().addMember(layout_one);
 		getContent().addMember(layout_two);
 		
-		
-		
 		save.addClickHandler(new ClickHandler() {
 			boolean iniLicCosts = false;
 			boolean hourLicCosts = false;
@@ -187,7 +258,6 @@ public class CriteriaView extends AbstractView {
 
 				//SC.say(vMImageTreeGrid.getSelectedPaths());
 				//String[] selection = vMImageTreeGrid.getSelectedPaths().split("/");
-				
 				
 				MatchResult matcher = RegExp.compile("Initial License Costs").exec(vMImageTreeGrid.getSelectedPaths());
 				if(matcher != null)
