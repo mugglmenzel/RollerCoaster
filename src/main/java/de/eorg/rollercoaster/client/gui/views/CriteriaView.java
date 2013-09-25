@@ -9,6 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.IButton;
@@ -17,6 +18,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
@@ -63,7 +65,7 @@ public class CriteriaView extends AbstractView {
 			.create(RollerCoasterService.class);
 
 	public CriteriaView(EView backView, EView nextView) {
-		super(true, true, "back", "next", backView,
+		super(true, false, "back", "next", backView,
 				nextView);
 		getHeading().setContents("Criteria");
 		getInstructions()
@@ -123,11 +125,14 @@ public class CriteriaView extends AbstractView {
 
 			}
 		
-		IButton save = new IButton("Speichern");
-		save.setLeft(300);
+		IButton save = new IButton("Save & Next");
+		save.setTitle("Save & Next");
+		save.setLeft(500);
+		save.setLayoutAlign(Alignment.RIGHT);
 		save.setVisible(true);
 		save.setAutoFit(true);
-		save.setTitle("Speichern");
+		save.setIcon("/images/arrow_right.png");
+		save.setIconOrientation("right");
 
 		vMImageTreeGrid.addDrawHandler(new DrawHandler() {
 			public void onDraw(DrawEvent event) {
@@ -165,9 +170,7 @@ public class CriteriaView extends AbstractView {
 		cloudServiceTreeGrid.setShowPartialSelection(true);
 		cloudServiceTreeGrid.setCascadeSelection(true);
 		
-		//TODO: Remove
-	    logger.log(Level.INFO, "Try to load CSCriteria...");
-	    
+		//Einstellungen der letzten Sitzung laden	    
 		if(RollerCoaster.loginInfo.getMember()!=null){
 
 			rollerCoasterService.loadCSCriteria(RollerCoaster.loginInfo.getMember().getSocialId(),new AsyncCallback<CSCriteria>(){
@@ -203,6 +206,7 @@ public class CriteriaView extends AbstractView {
 					
 					if (result.isAvgLatency())
 						cloudServiceTreeGrid.selectRecord(cloudServiceData[11]);
+					
 				}});
 
 			}
@@ -219,7 +223,8 @@ public class CriteriaView extends AbstractView {
 
 		layout_two.addMember(h_2);
 		layout_two.addMember(cloudServiceTreeGrid);
-		layout_two.addMember(save);
+		navigation.addChild(save);
+//		layout_two.addMember(save);
 
 		/**
 		 * nextButton.addClickHandler(new ClickHandler() { public void
@@ -239,9 +244,11 @@ public class CriteriaView extends AbstractView {
 		 * cloudServiceTree.getAttributeAsBoolean("Avg. Lateny")); } });
 		 */
 
+		HLayout horizontal_layout = new HLayout();
+		horizontal_layout.addMember(layout_one);
+		horizontal_layout.addMember(layout_two);
 		// Alles in Layout packen
-		getContent().addMember(layout_one);
-		getContent().addMember(layout_two);
+		getContent().addMember(horizontal_layout);
 		
 		save.addClickHandler(new ClickHandler() {
 			boolean iniLicCosts = false;
@@ -354,7 +361,7 @@ public class CriteriaView extends AbstractView {
 
 					@Override
 					public void onSuccess(Void result) {
-						// TODO Auto-generated method stub
+						nextTab(-1);
 						
 					}});
 				

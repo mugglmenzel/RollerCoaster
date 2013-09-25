@@ -22,23 +22,78 @@ RollerCoasterService {
 	private Logger log = Logger.getLogger(RollerCoasterServiceImpl.class.getName());
 	@Override
 	public void savePreference(int VMImage, int Quality, int Latency, int Performance, int Cost, String user) {
+
+		//TODO: Delete PrintOut
+		log.info("Saving Preferences...");
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Preferences p = new Preferences(VMImage,Quality,Latency,Performance,Cost,user);
-		try{
+
+		String pKey = Preferences.class.getSimpleName()+"."+user;
+
+		Preferences p = null;
+
+		Transaction tx = pm.currentTransaction();
+		try {
+			tx.begin();
+			try{
+				p = pm.getObjectById(Preferences.class, pKey);
+				p.setData(VMImage,Quality,Latency,Performance,Cost);
+			}
+			catch (Exception e) {
+				p =	new Preferences(pKey, VMImage,Quality,Latency,Performance,Cost,user);
+			}
 			pm.makePersistent(p);
-		}finally
-		{
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
 			pm.close();
 		}
+		
+//		PersistenceManager pm = PMF.get().getPersistenceManager();
+//		Preferences p = new Preferences(VMImage,Quality,Latency,Performance,Cost,user);
+//		try{
+//			pm.makePersistent(p);
+//		}finally
+//		{
+//			pm.close();
+//		}
 	}
 
 	public Preferences loadPreferences(String key) {
+		
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Query query = pm.newQuery(Preferences.class);
-		query.setFilter("userID=='"+key+"'");
-		List<Preferences> result = (List<Preferences>) query.execute();
 
-		return result.size() > 0 ? result.get(0) : null;
+		String k = Preferences.class.getSimpleName()+"."+key;
+
+		Transaction tx = pm.currentTransaction();
+		Preferences p = null;
+
+		try {
+			tx.begin();
+			p = pm.getObjectById(Preferences.class, k);
+			tx.commit();
+		}
+		catch (Exception e) {
+
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		} 
+		//TODO: Delete PrintOut
+		log.info("Loaded Preferences: "+p);
+		
+		return p;
+		
+//		PersistenceManager pm = PMF.get().getPersistenceManager();
+//		Query query = pm.newQuery(Preferences.class);
+//		query.setFilter("userID=='"+key+"'");
+//		List<Preferences> result = (List<Preferences>) query.execute();
+//
+//		return result.size() > 0 ? result.get(0) : null;
 	}
 	/*	
 	Objectify ofy = ObjectifyService.begin();
@@ -118,15 +173,6 @@ RollerCoasterService {
 			pm.close();
 		}
 
-		//		PersistenceManager pm = PMF.get().getPersistenceManager();
-		//		CSCriteria c = new CSCriteria(cpu,ram,uptime,popularity,initialLicenceCosts,hourlyLicenceCosts,maxLatency,avgLatency,user);
-		//		try{
-		//			pm.makePersistent(c);
-		//		}finally
-		//		{
-		//			pm.close();
-		//		}
-
 	}
 
 	public CSCriteria loadCSCriteria(String key) {
@@ -154,21 +200,11 @@ RollerCoasterService {
 		} 
 
 		return c;
-
-		//		PersistenceManager pm = PMF.get().getPersistenceManager();
-		//		Query query = pm.newQuery(CSCriteria.class);
-		//		query.setFilter("userID=='"+key+"'");
-		//		List<CSCriteria> result = (List<CSCriteria>) query.execute();
-		//
-		//		return result.size() > 0 ? result.get(0) : null;
 	}
 
 	@Override
 	public void saveVMCriteria(boolean initialLicenceCosts,
 			boolean hourlyLicenceCosts, boolean popularity, boolean age, String user) {
-
-		//TODO: Delete PrintOut
-		log.info("Saving VMCriteria...");
 		
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
@@ -195,15 +231,6 @@ RollerCoasterService {
 			pm.close();
 		}
 
-		//	PersistenceManager pm = PMF.get().getPersistenceManager();
-		//	VMCriteria v = new VMCriteria(initialLicenceCosts,hourlyLicenceCosts,popularity,age,user);
-		//	try{
-		//		pm.makePersistent(v);
-		//	}finally
-		//	{
-		//		pm.close();
-		//	}
-
 	}
 	public VMCriteria loadVMCriteria(String key) {
 
@@ -228,17 +255,7 @@ RollerCoasterService {
 			}
 			pm.close();
 		} 
-		//TODO: Delete PrintOut
-		log.info("Loaded VMCriteria: "+v.getInitialLicenceCosts());
 		return v;
 	}
-
-	//	PersistenceManager pm = PMF.get().getPersistenceManager();
-	//	Query query = pm.newQuery(VMCriteria.class);
-	//	query.setFilter("userID=='"+key+"'");
-	//	List<VMCriteria> result = (List<VMCriteria>) query.execute();
-	//	
-	//	return result.size() > 0 ? result.get(0) : null;
-	//}
 
 }

@@ -14,9 +14,9 @@
 
 	<!-- Other module inherits -->
 	<!-- <inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG" />-->
-	<inherits name="com.google.gwt.logging.Logging"/>
-	<set-property name="gwt.logging.enabled" value="TRUE"/>       
-	<set-property name="gwt.logging.popupHandler" value="DISABLED" /> 
+	<!--<inherits name="com.google.gwt.logging.Logging"/>-->
+
+	
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class='de.eorg.rollercoaster.client.RollerCoaster' />

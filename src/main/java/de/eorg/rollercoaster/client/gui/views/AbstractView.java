@@ -214,7 +214,8 @@ public abstract class AbstractView implements IView {
 		navigation.setWidth(500);
 		navigation.setHeight(saveAndNext.getHeight());
 		navigation.addChild(back);
-		navigation.addChild(saveAndNext);
+		if (showNextButton)
+			navigation.addChild(saveAndNext);
 
 		setNavigation(navigation);
 	}

@@ -16,7 +16,7 @@ import de.eorg.rollercoaster.client.RollerCoaster;
 public class WelcomeView extends AbstractView {
 
 	public WelcomeView(EView nextView) {
-		super(false, true, "", "start", EView.WELCOME_VIEW, nextView);
+		super(false, false, "", "start", EView.WELCOME_VIEW, nextView);
 
 		getHeading().setContents("Welcome to the Roller Coaster!");
 

@@ -6,11 +6,12 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-  
+
 @PersistenceCapable
 public class Preferences implements Serializable {
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Long id;
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private String key;
 	@Persistent
 	private int VMImage;
 	@Persistent
@@ -22,25 +23,34 @@ public class Preferences implements Serializable {
 	@Persistent
 	private int Cost;
 	@Persistent
-	@PrimaryKey
 	private String userID;
-	
-	public Preferences(int VMImage, int Quality, int Latency, int Performance, int Cost, String user){
-		
-	this.VMImage = VMImage;
-	this.Quality = Quality;
-	this.Latency = Latency;
-	this.Performance = Performance;
-	this.Cost = Cost;
-	this.userID = user;
+
+	public Preferences(String key, int VMImage, int Quality, int Latency, int Performance, int Cost, String user){
+
+		this.key = key;
+		this.VMImage = VMImage;
+		this.Quality = Quality;
+		this.Latency = Latency;
+		this.Performance = Performance;
+		this.Cost = Cost;
+		this.userID = user;
 	}
-	
+
 	public Preferences(){}
+
+	public void setData(int VMImage, int Quality, int Latency, int Performance, int Cost){
+
+		this.VMImage = VMImage;
+		this.Quality = Quality;
+		this.Latency = Latency;
+		this.Performance = Performance;
+		this.Cost = Cost;
+	}
 
 	public String getUser() {
 		return userID;
 	}
-	
+
 	public int getVMImage(){
 		return VMImage;
 	}
@@ -56,7 +66,7 @@ public class Preferences implements Serializable {
 	public int getCost(){
 		return Cost;
 	}
-	
 
- 
+
+
 }
