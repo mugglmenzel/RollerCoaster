@@ -111,12 +111,12 @@ public class RollerCoaster implements EntryPoint {
 		welcomeInfo.setBackgroundColor("#ffffff");
 
 		Label welcomeLabel = new Label(
-				"<h1 style=\"font-size: 40pt\">Welcome!</h1><p style=\"font-size: 20pt\"><span style=\"font-weight: bolder;\">Hoopla</span> <span style=\"font-style: italic; font-weight: bolder;\">n.</span> is  ... .</p><p style=\"font-size: 20pt\">Feel free to play Hoopla and <a href=\"http://myownthemepark.com/prices-table/\">contact us for a premium account</a>. Simply sign in with a social loginInfo account (Facebook, Twitter, Google+).</p>");
+				"<h1 style=\"font-size: 30pt\">Welcome!</h1><p style=\"font-size: 20pt\"><span style=\"font-weight: bolder;\">Rollercoaster</span> <span style=\"font-style: italic; font-weight: bolder;\">n.</span> is  ... .</p><p style=\"font-size: 20pt\">Feel free to ride the Rollercoaster and <a href=\"http://myownthemepark.com/prices-table/\">contact us for a premium account</a>. Simply sign in with a social loginInfo account (Facebook, Twitter, Google+).</p>");
 		welcomeLabel.setWidth(600);
 		welcomeLabel.setStyleName("welcome");
 
 		Label loginAnchor = new Label(
-				"<span style=\"font-size: 35pt; cursor: pointer; text-decoration: underline;\">Login</span>");
+				"<span style=\"font-size: 25pt; cursor: pointer; text-decoration: underline;\">Login</span>");
 		loginAnchor.setAutoFit(true);
 		loginAnchor.setWrap(false);
 		loginAnchor.addClickHandler(new ClickHandler() {

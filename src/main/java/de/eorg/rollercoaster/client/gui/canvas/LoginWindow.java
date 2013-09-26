@@ -71,7 +71,7 @@ public class LoginWindow extends Window {
 		windowLayout.setMembersMargin(15);
 
 		Label welcomeLabel = new Label(
-				"<span style=\"font-size: 20px\">Please Login or Register to access the Crawler.</span>");
+				"<span style=\"font-size: 20px\">Please Login or Register to access the Rollercoaster.</span>");
 		welcomeLabel.setHeight(50);
 		welcomeLabel.setWrap(false);
 

@@ -2,13 +2,13 @@
  @CHARSET "ISO-8859-1";
 
 html {
-	background: url(../images/themepark-map.jpg) no-repeat center center
-		fixed;
+	/*background: url(../images/themepark-map.jpg) no-repeat center center
+		fixed;*/
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	background-color: #000000;
+	background-color: #BFEFFF;
 }
 
 body {
@@ -18,7 +18,8 @@ body {
 }
 
 .login {
-	color: #ffffff !important;
+	color: #696969 !important;
+	font-size: em;
 }
 
 #loading {
@@ -32,9 +33,9 @@ body {
 }
 
 #loader span {
-	color: #ffffff;
-	text-shadow: 0px 0px 15px #ff00ff, 0px 0px 12px #ff00ff, 0px 0px 10px
-		#ff00ff;
+	color: #696969;
+	text-shadow: 0px 0px 15px #ffffff, 0px 0px 12px #ffffff, 0px 0px 10px
+		#ffffff;
 	text-transform: capitalize;
 	font-variant: small-caps;
 	font-weight: bolder;

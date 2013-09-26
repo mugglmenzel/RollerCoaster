@@ -53,13 +53,13 @@ public class TopLayout extends HLayout {
 		
 
 		Label welcomeLabel = new Label(
-				"<span style=\"font-size: 20pt\">Checking status of login...</span>");
+				"<span style=\"font-size: 14pt\">Checking status of login...</span>");
 		welcomeLabel.setAutoWidth();
 		welcomeLabel.setWrap(false);
 		welcomeLabel.setStyleName("login");
 
 		Anchor profileAnchor = new Anchor(
-				"<span style=\"font-size: 20pt\"> </span>", true);
+				"<span style=\"font-size: 14pt\"> </span>", true);
 		profileAnchor.setWordWrap(false);
 		profileAnchor.setStyleName("login");
 
@@ -69,7 +69,7 @@ public class TopLayout extends HLayout {
 		loginDivider.setStyleName("login");
 
 		Anchor loginAnchor = new Anchor(
-				"<span style=\"font-size: 20pt\">Login</span>", true);
+				"<span style=\"font-size: 14pt\">Login</span>", true);
 		loginAnchor.setWordWrap(false);
 		loginAnchor.setStyleName("login");
 
@@ -87,7 +87,7 @@ public class TopLayout extends HLayout {
 			welcomeLabel.setWidth(0);
 			welcomeLabel.setVisible(false);
 
-			profileAnchor.setHTML("<span style=\"font-size: 20pt\">"
+			profileAnchor.setHTML("<span style=\"font-size: 14pt\">"
 					+ loginInfo.getMember().getNickname() + "</span>");
 			profileAnchor
 					.addClickHandler(new com.google.gwt.event.dom.client.ClickHandler() {
@@ -108,11 +108,11 @@ public class TopLayout extends HLayout {
 
 			loginAnchor.setHref(loginInfo.getLogoutUrl());
 			loginAnchor
-					.setHTML("<span style=\"font-size: 20pt\">Logout</span>");
+					.setHTML("<span style=\"font-size: 14pt\">Logout</span>");
 		} else {
 			profileImg.setVisible(false);
 			welcomeLabel
-					.setContents("<span style=\"font-size: 20pt\">Not logged in</span>");
+					.setContents("<span style=\"font-size: 14pt\">Not logged in</span>");
 			profileAnchor.setEnabled(false);
 			profileAnchor.setVisible(false);
 			profileAnchor.setWidth("0px");
@@ -127,7 +127,7 @@ public class TopLayout extends HLayout {
 									.show();
 						}
 					});
-			loginAnchor.setHTML("<span style=\"font-size: 20pt\">Login</span>");
+			loginAnchor.setHTML("<span style=\"font-size: 14pt\">Login</span>");
 
 		}
 		login.addMember(profileImg);

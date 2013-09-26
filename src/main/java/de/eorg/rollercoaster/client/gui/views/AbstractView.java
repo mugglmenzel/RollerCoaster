@@ -70,8 +70,8 @@ public abstract class AbstractView implements IView {
 		VLayout help = new VLayout();
 		help.setBackgroundImage("/images/post-it.png");
 		help.setBackgroundRepeat(BkgndRepeat.NO_REPEAT);
-		help.setWidth(349);
-		help.setHeight(389);
+		help.setWidth(150);
+		help.setHeight(167);
 		help.setLayoutAlign(VerticalAlignment.TOP);
 
 		getPostitHeader().setValign(VerticalAlignment.TOP);

@@ -361,7 +361,7 @@ public class CriteriaView extends AbstractView {
 
 					@Override
 					public void onSuccess(Void result) {
-						nextTab(-1);
+						
 						
 					}});
 				
@@ -378,7 +378,7 @@ public class CriteriaView extends AbstractView {
 						// TODO Auto-generated method stub
 						
 					}});
-				
+				nextTab(-1);
 			}
 		});
 	}
